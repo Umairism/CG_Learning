@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Graphics Visual Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>CG Visual</h2>
+            </div>
+            <div id="sidebar-analytics" style="margin: 10px 15px; padding: 15px; background: rgba(88,166,255,0.1); border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="color:var(--text-color);">Progress</span>
+                    <strong id="side-prog-text">0 / 16</strong>
+                </div>
+                <div style="background: var(--bg-color); height: 6px; border-radius: 3px; margin-bottom: 10px; overflow: hidden;">
+                    <div id="side-prog-bar" style="background: var(--primary-color); height: 100%; width: 0%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="color:var(--text-color);">Readiness</span>
+                    <strong id="side-readiness-text">0%</strong>
+                </div>
+                <button class="btn" style="width: 100%; padding: 5px; font-size: 0.8rem; background: var(--surface-color);" onclick="document.querySelector('#hidden-dash-link').click()">View Dashboard →</button>
+            </div>
+            
+            <ul class="nav-links" style="display:none;"><li data-target="page-dashboard" id="hidden-dash-link"></li></ul>
+
+            <div class="nav-section" style="padding: 10px 24px; color: var(--primary-color); font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Learning Modules</div>
+            <ul class="nav-links" style="padding-top: 5px;">
+                <li class="active" data-target="page-intro"><input type="checkbox" class="prog-chk" data-id="intro"> 1. Intro to CG</li>
+                <li data-target="page-coords"><input type="checkbox" class="prog-chk" data-id="coords"> 2. Coordinates</li>
+                <li data-target="page-dda"><input type="checkbox" class="prog-chk" data-id="dda"> 3. DDA Line</li>
+                <li data-target="page-bresenham"><input type="checkbox" class="prog-chk" data-id="bresenham"> 4. Bresenham Line</li>
+                <li data-target="page-line-clip"><input type="checkbox" class="prog-chk" data-id="line-clip"> 5. Line Clipping</li>
+                <li data-target="page-poly-clip"><input type="checkbox" class="prog-chk" data-id="poly-clip"> 6. Polygon Clipping</li>
+                <li data-target="page-lighting"><input type="checkbox" class="prog-chk" data-id="lighting"> 7. Lighting & Shading</li>
+                <li data-target="page-texture"><input type="checkbox" class="prog-chk" data-id="texture"> 8. Texture Mapping</li>
+                <li data-target="page-vr"><input type="checkbox" class="prog-chk" data-id="vr"> 9. VR Modeling</li>
+                <li data-target="page-trends"><input type="checkbox" class="prog-chk" data-id="trends"> 10. Modern Trends</li>
+            </ul>
+            <div class="nav-section" style="padding: 10px 24px; color: var(--primary-color); font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Exam Prep & Tools</div>
+            <ul class="nav-links" style="padding-top: 5px;">
+                <li data-target="page-compare"><input type="checkbox" class="prog-chk" data-id="compare"> DDA vs Bresenham</li>
+                <li data-target="page-survival"><input type="checkbox" class="prog-chk" data-id="survival"> Exam Survival Sheet</li>
+                <li data-target="page-viva"><input type="checkbox" class="prog-chk" data-id="viva"> Common Viva Questions</li>
+                <li data-target="page-exam-mode"><input type="checkbox" class="prog-chk" data-id="exam-mode"> Challenge & Exam Mode</li>
+                <li data-target="page-playground"><input type="checkbox" class="prog-chk" data-id="playground"> Graphics Playground</li>
+                <li data-target="page-practice"><input type="checkbox" class="prog-chk" data-id="practice"> Practice & Quiz</li>
+            </ul>
+        </nav>
+
+        <main class="content-area">
+            <!-- Page 1: Intro -->
+            <section id="page-intro" class="page active">
+                <header class="page-header">
+                    <h1>Introduction to Computer Graphics</h1>
+                    <p>Understanding the foundations and applications of CG.</p>
+                </header>
+                <div class="page-content">
+                    <div class="card">
+                        <h3>What is Computer Graphics?</h3>
+                        <p>Computer graphics is the creation, manipulation, and display of visual content using computers. It involves representing and rendering geometric data.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Key Applications</h3>
+                        <div class="applications-grid">
+                            <div class="app-chip">Games</div>
+                            <div class="app-chip">Animation</div>
+                            <div class="app-chip">CAD</div>
+                            <div class="app-chip">Medical Imaging</div>
+                            <div class="app-chip">VR & AR</div>
+                        </div>
+                    </div>
+
+                    <div class="card timeline-card">
+                        <h3>Evolution Timeline</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">1960s: Sketchpad</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">Raster Graphics</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">OpenGL</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">GPU Era</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">VR / AR</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">Real-time Ray Tracing</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 2: Coordinates -->
+            <section id="page-coords" class="page">
+                <header class="page-header">
+                    <h1>Coordinate Systems</h1>
+                    <p>How objects map from the mathematical world to the physical screen.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>World Coordinates</h3>
+                            <p>The mathematical coordinate space where the scene is defined.</p>
+                        </div>
+                        <div class="card">
+                            <h3>Window</h3>
+                            <p>A selected rectangular region of the world space to be displayed.</p>
+                        </div>
+                        <div class="card">
+                            <h3>Viewport</h3>
+                            <p>The sub-region of the screen/display where the window is mapped.</p>
+                        </div>
+                        <div class="card">
+                            <h3>Screen Coordinates</h3>
+                            <p>The actual physical pixels on the device monitor.</p>
+                        </div>
+                    </div>
+
+                    <div class="card interactive-demo">
+                        <h3>Interactive Mapping Demo</h3>
+                        <p>Drag the World Window to see how it affects the Viewport.</p>
+                        <div class="demo-container">
+                            <div class="world-space" id="world-space">
+                                <span>World Space</span>
+                                <div class="draggable-window" id="drag-window">Window</div>
+                                <div class="world-object">★</div>
+                            </div>
+                            <div class="arrow">➔</div>
+                            <div class="screen-space" id="screen-space">
+                                <span>Screen / Viewport</span>
+                                <div class="viewport-object" id="vp-object">★</div>
+                            </div>
+                        </div>
+                        <div class="calculations" id="coord-calc">
+                            Mapping calculations will appear here...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Placeholders for other pages, will be populated next -->
+            <!-- Page 3: DDA Algorithm -->
+            <section id="page-dda" class="page">
+                <header class="page-header">
+                    <h1>DDA Algorithm</h1>
+                    <p>Digital Differential Analyzer: A step-by-step line drawing technique.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>How it Works</h3>
+                            <p>DDA uses floating-point arithmetic to calculate the next pixel on a line by incrementally adding the slope to either x or y.</p>
+                            <ul>
+                                <li>Compute <code>dx = x2 - x1</code> and <code>dy = y2 - y1</code></li>
+                                <li><code>steps = max(|dx|, |dy|)</code></li>
+                                <li><code>xInc = dx / steps</code>, <code>yInc = dy / steps</code></li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>Characteristics</h3>
+                            <p><strong>Advantages:</strong> Simple to understand and implement.</p>
+                            <p><strong>Disadvantages:</strong> Uses slow floating-point arithmetic. Rounding errors accumulate.</p>
+                            <p><strong>Complexity:</strong> O(steps) per line.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Interactive DDA Visualization</h3>
+                        <div class="dda-controls" style="display:flex; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label>P1 (x1, y1): </label>
+                                <input type="number" id="dda-x1" value="2" style="width:50px">
+                                <input type="number" id="dda-y1" value="2" style="width:50px">
+                            </div>
+                            <div>
+                                <label>P2 (x2, y2): </label>
+                                <input type="number" id="dda-x2" value="10" style="width:50px">
+                                <input type="number" id="dda-y2" value="6" style="width:50px">
+                            </div>
+                            <button class="btn btn-primary" id="dda-init">Load Points</button>
+                        </div>
+                        
+                        <div style="display: flex; gap: 20px;">
+                            <canvas id="dda-canvas" width="400" height="400" style="background:#000; border:1px solid #30363d; border-radius: 4px;"></canvas>
+                            
+                            <div style="flex-grow: 1;">
+                                <div class="btn-group">
+                                    <button class="btn" id="dda-prev">Previous</button>
+                                    <button class="btn" id="dda-next">Next</button>
+                                    <button class="btn" id="dda-play">Auto Play</button>
+                                    <button class="btn" id="dda-pause">Pause</button>
+                                    <button class="btn" id="dda-reset">Reset</button>
+                                </div>
+                                <div id="dda-vars" style="font-family:monospace; background:#000; padding:10px; color:#58a6ff; margin-bottom: 15px; border-radius:4px;">
+                                    dx = -, dy = -, steps = -<br>
+                                    xInc = -, yInc = -
+                                </div>
+                                <div style="max-height: 230px; overflow-y: auto; background:#161b22; border: 1px solid #30363d;">
+                                    <table id="dda-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                                        <thead>
+                                            <tr style="border-bottom: 1px solid #30363d; background: rgba(88,166,255,0.1);">
+                                                <th style="padding: 8px;">Step</th>
+                                                <th style="padding: 8px;">x</th>
+                                                <th style="padding: 8px;">y</th>
+                                                <th style="padding: 8px;">Rounded (X,Y)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card complexity-panel" style="margin-top: 20px;">
+                        <h3>Complexity & Exam Tips</h3>
+                        <div class="theory-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Time Complexity:</strong> O(N)<br><small>Where N is the number of steps (max of dx or dy).</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Space Complexity:</strong> O(1)<br><small>Only a few variables are stored.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Advantages:</strong> Simple. Eliminates loop multiplication.</div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Disadvantages:</strong> Floating point arithmetic is slow. Rounding error.</div>
+                            <div style="grid-column: span 2; border-left: 3px solid var(--warning-color); padding-left: 10px; margin-top: 5px;"><strong>Exam Tip:</strong> Examiners love asking why DDA is slower than Bresenham. Mention floating-point addition and the `round()` function overhead.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page 4: Bresenham Algorithm -->
+            <section id="page-bresenham" class="page">
+                <header class="page-header">
+                    <h1>Bresenham's Line Algorithm</h1>
+                    <p>Integer-based, highly efficient line drawing algorithm.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>Decision Parameter</h3>
+                            <p>Bresenham's algorithm uses a decision parameter <code>P</code> to choose between the East (E) or North-East (NE) pixel.</p>
+                            <ul>
+                                <li><strong>Initial P₀:</strong> <code>2dy - dx</code></li>
+                                <li><strong>If P < 0:</strong> Choose E pixel. <code>P_{k+1} = P_k + 2dy</code></li>
+                                <li><strong>If P ≥ 0:</strong> Choose NE pixel. <code>P_{k+1} = P_k + 2dy - 2dx</code></li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>DDA vs Bresenham</h3>
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
+                                        <th style="padding: 8px;">Metric</th>
+                                        <th style="padding: 8px;">DDA</th>
+                                        <th style="padding: 8px;">Bresenham</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
+                                        <td style="padding: 8px;">Speed</td>
+                                        <td style="padding: 8px;">Slower</td>
+                                        <td style="padding: 8px;"><strong>Faster</strong></td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
+                                        <td style="padding: 8px;">Accuracy</td>
+                                        <td style="padding: 8px;">Rounding errors</td>
+                                        <td style="padding: 8px;"><strong>Exact</strong></td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid var(--border-color);">
+                                        <td style="padding: 8px;">Arithmetic</td>
+                                        <td style="padding: 8px;">Floating-point</td>
+                                        <td style="padding: 8px;"><strong>Integer only</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Interactive Bresenham Visualization</h3>
+                        <div class="bres-controls" style="display:flex; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label>P1 (x1, y1): </label>
+                                <input type="number" id="bres-x1" value="2" style="width:50px">
+                                <input type="number" id="bres-y1" value="2" style="width:50px">
+                            </div>
+                            <div>
+                                <label>P2 (x2, y2): </label>
+                                <input type="number" id="bres-x2" value="10" style="width:50px">
+                                <input type="number" id="bres-y2" value="6" style="width:50px">
+                            </div>
+                            <button class="btn btn-primary" id="bres-init">Load Points</button>
+                        </div>
+                        
+                        <div style="display: flex; gap: 20px;">
+                            <canvas id="bres-canvas" width="400" height="400" style="background:#000; border:1px solid #30363d; border-radius: 4px;"></canvas>
+                            
+                            <div style="flex-grow: 1;">
+                                <div class="btn-group">
+                                    <button class="btn" id="bres-prev">Previous</button>
+                                    <button class="btn" id="bres-next">Next</button>
+                                    <button class="btn" id="bres-play">Auto Play</button>
+                                    <button class="btn" id="bres-pause">Pause</button>
+                                    <button class="btn" id="bres-reset">Reset</button>
+                                </div>
+                                <div id="bres-vars" style="font-family:monospace; background:#000; padding:10px; color:#warning-color; margin-bottom: 15px; border-radius:4px;">
+                                    dx = -, dy = -<br>
+                                    Current P = -<br>
+                                    Chosen Pixel: -
+                                </div>
+                                <div style="max-height: 230px; overflow-y: auto; background:#161b22; border: 1px solid #30363d;">
+                                    <table id="bres-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                                        <thead>
+                                            <tr style="border-bottom: 1px solid #30363d; background: rgba(210,153,34,0.1);">
+                                                <th style="padding: 8px;">k</th>
+                                                <th style="padding: 8px;">Pk</th>
+                                                <th style="padding: 8px;">(Xk+1, Yk+1)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card complexity-panel" style="margin-top: 20px;">
+                        <h3>Complexity & Exam Tips</h3>
+                        <div class="theory-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Time Complexity:</strong> O(N)<br><small>N is dx (the driving axis).</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Space Complexity:</strong> O(1)<br><small>Uses only integer variables.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Advantages:</strong> Fast, integer-only. No rounding errors. Exact pixels.</div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Disadvantages:</strong> More complex initial logic than DDA.</div>
+                            <div style="grid-column: span 2; border-left: 3px solid var(--warning-color); padding-left: 10px; margin-top: 5px;"><strong>Exam Tip:</strong> Be ready to trace the Decision Parameter (Pk) table. If Pk is negative, only X increments. If Pk is positive, both X and Y increment!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page 5: Line Clipping -->
+            <section id="page-line-clip" class="page">
+                <header class="page-header">
+                    <h1>Line Clipping (Cohen-Sutherland)</h1>
+                    <p>Efficiently removing lines or parts of lines outside the viewing window.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>Outcodes</h3>
+                            <p>Every point is assigned a 4-bit binary code (TBRL) indicating its position relative to the clipping window (Top, Bottom, Right, Left).</p>
+                            <pre style="background: #000; padding: 10px; border-radius: 4px; color: var(--success-color);">
+1001 | 1000 | 1010
+------------------
+0001 | 0000 | 0010
+------------------
+0101 | 0100 | 0110</pre>
+                        </div>
+                        <div class="card">
+                            <h3>Algorithm Steps</h3>
+                            <ol style="margin-left: 20px;">
+                                <li>Compute outcodes for P1 and P2.</li>
+                                <li><strong>Trivially Accept:</strong> Both outcodes are 0000.</li>
+                                <li><strong>Trivially Reject:</strong> Logical AND of outcodes != 0000.</li>
+                                <li><strong>Clip:</strong> Find intersection with window boundary and repeat.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Interactive Cohen-Sutherland Visualization</h3>
+                        <p>Drag the line endpoints to see how the outcodes change and whether the line is accepted, rejected, or clipped.</p>
+                        
+                        <div style="display: flex; gap: 20px; align-items: flex-start; margin-top: 20px;">
+                            <div style="position: relative;">
+                                <canvas id="line-clip-canvas" width="400" height="400" style="background:#000; border:1px solid #30363d; border-radius: 4px;"></canvas>
+                                <div id="p1-drag" style="width: 14px; height: 14px; background: var(--primary-color); border-radius: 50%; position: absolute; cursor: move; transform: translate(-50%, -50%);"></div>
+                                <div id="p2-drag" style="width: 14px; height: 14px; background: var(--warning-color); border-radius: 50%; position: absolute; cursor: move; transform: translate(-50%, -50%);"></div>
+                            </div>
+                            
+                            <div style="flex-grow: 1;">
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" id="line-clip-step">Step 1: Compute Outcodes</button>
+                                    <button class="btn" id="line-clip-reset">Reset Interaction</button>
+                                </div>
+                                <div id="line-clip-vars" style="font-family:monospace; background:#000; padding:15px; color:#e6edf3; margin-bottom: 15px; border-radius:4px; font-size: 1.1rem; line-height: 1.8;">
+                                    Drag points to begin.<br>
+                                    P1 Outcode: -<br>
+                                    P2 Outcode: -
+                                </div>
+                                <div id="line-clip-status" style="padding: 15px; border-radius: 4px; font-weight: bold; background: var(--surface-color); border: 1px solid var(--border-color);">
+                                    Status: Waiting...
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card complexity-panel" style="margin-top: 20px;">
+                        <h3>Complexity & Exam Tips</h3>
+                        <div class="theory-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Time Complexity:</strong> O(1) to O(K)<br><small>Very fast for trivial cases.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Space Complexity:</strong> O(1)<br><small>Outcodes are just 4 bits.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Advantages:</strong> Extremely fast for trivially accepted/rejected lines.</div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Disadvantages:</strong> Needs intersection math if not trivial.</div>
+                            <div style="grid-column: span 2; border-left: 3px solid var(--warning-color); padding-left: 10px; margin-top: 5px;"><strong>Exam Tip:</strong> The Outcode sequence is always TBRL (Top, Bottom, Right, Left). Memorize that `AND != 0000` means trivial rejection.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page 6: Polygon Clipping -->
+            <section id="page-poly-clip" class="page">
+                <header class="page-header">
+                    <h1>Polygon Clipping (Sutherland-Hodgman)</h1>
+                    <p>Clipping an entire polygon against each edge of a window.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>Four Cases for Each Edge</h3>
+                            <p>When traversing from vertex V1 to V2 against a clipping boundary:</p>
+                            <ul>
+                                <li><strong>Inside → Inside:</strong> Add V2.</li>
+                                <li><strong>Inside → Outside:</strong> Add Intersection (I).</li>
+                                <li><strong>Outside → Outside:</strong> Add nothing.</li>
+                                <li><strong>Outside → Inside:</strong> Add Intersection (I) and V2.</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3>Algorithm Flow</h3>
+                            <p>The entire polygon is clipped against the Left edge, producing a new polygon. This new polygon is then clipped against the Right edge, then Top, then Bottom.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Interactive Sutherland-Hodgman Visualization</h3>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="poly-clip-left">Clip Left</button>
+                            <button class="btn btn-primary" id="poly-clip-right">Clip Right</button>
+                            <button class="btn btn-primary" id="poly-clip-top">Clip Top</button>
+                            <button class="btn btn-primary" id="poly-clip-bottom">Clip Bottom</button>
+                            <button class="btn" id="poly-clip-reset">Reset Polygon</button>
+                        </div>
+                        
+                        <div style="display: flex; gap: 20px;">
+                            <canvas id="poly-clip-canvas" width="400" height="400" style="background:#000; border:1px solid #30363d; border-radius: 4px;"></canvas>
+                            <div style="flex-grow: 1;">
+                                <div id="poly-clip-log" style="background:#161b22; padding:15px; border-radius:4px; border:1px solid #30363d; height: 400px; overflow-y: auto; font-family: monospace; color: var(--text-muted);">
+                                    Initial polygon loaded.<br>
+                                    Waiting for edge clipping...
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card complexity-panel" style="margin-top: 20px;">
+                        <h3>Complexity & Exam Tips</h3>
+                        <div class="theory-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Time Complexity:</strong> O(N * E)<br><small>N vertices against E clip edges.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Space Complexity:</strong> O(N)<br><small>Intermediate polygons must be stored.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Advantages:</strong> Works well for convex clipping regions. Simple pipeline.</div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Disadvantages:</strong> Creates extraneous edges for concave polygons.</div>
+                            <div style="grid-column: span 2; border-left: 3px solid var(--warning-color); padding-left: 10px; margin-top: 5px;"><strong>Exam Tip:</strong> Know the 4 intersection cases perfectly! Outside → Inside generates TWO points (Intersection + V2).</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page 7: Lighting & Shading -->
+            <section id="page-lighting" class="page">
+                <header class="page-header">
+                    <h1>Lighting & Shading</h1>
+                    <p>Modeling realistic appearance using the Phong Reflection Model.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>Phong Reflection Model</h3>
+                            <p>Combines three components to simulate light interacting with a surface:</p>
+                            <ul>
+                                <li><span style="color:var(--danger-color)">Ambient:</span> Constant background light scattered everywhere.</li>
+                                <li><span style="color:var(--primary-color)">Diffuse:</span> Light scattered equally in all directions (matte).</li>
+                                <li><span style="color:var(--success-color)">Specular:</span> Highlight from reflected light (shiny).</li>
+                            </ul>
+                            <div style="background:#000; padding:10px; margin-top:10px; border-radius:4px; font-family:monospace; text-align:center;">
+                                Total = Ambient + Diffuse + Specular
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Shading Models</h3>
+                            <ul>
+                                <li><strong>Flat Shading:</strong> One normal per polygon. Blocky appearance.</li>
+                                <li><strong>Gouraud (Smooth):</strong> Normals at vertices, interpolate colors.</li>
+                                <li><strong>Phong Shading:</strong> Interpolate normals, compute lighting per pixel. Best quality.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Interactive Phong Shading Preview</h3>
+                        <div style="display:flex; gap: 40px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 300px;">
+                                <div style="display: flex; gap: 10px; justify-content: space-between; margin-bottom: 20px;">
+                                    <div style="text-align: center;">
+                                        <canvas id="light-ambient" width="100" height="100" style="border-radius:50%; background:#000; display:block; margin:0 auto;"></canvas>
+                                        <small style="color:var(--danger-color)">Ambient</small>
+                                    </div>
+                                    <div style="font-size: 24px; margin-top: 35px;">+</div>
+                                    <div style="text-align: center;">
+                                        <canvas id="light-diffuse" width="100" height="100" style="border-radius:50%; background:#000; display:block; margin:0 auto;"></canvas>
+                                        <small style="color:var(--primary-color)">Diffuse</small>
+                                    </div>
+                                    <div style="font-size: 24px; margin-top: 35px;">+</div>
+                                    <div style="text-align: center;">
+                                        <canvas id="light-specular" width="100" height="100" style="border-radius:50%; background:#000; display:block; margin:0 auto;"></canvas>
+                                        <small style="color:var(--success-color)">Specular</small>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                                    <canvas id="light-total" width="200" height="200" style="border-radius:50%; background:#000;"></canvas>
+                                    <br><strong>Final Combined Render</strong>
+                                </div>
+                            </div>
+                            
+                            <div style="flex: 1; min-width: 300px; display:flex; flex-direction: column; gap: 15px;">
+                                <div>
+                                    <label style="display:flex; justify-content: space-between;">
+                                        Ambient Coefficient (Ka): <span id="val-ka">0.2</span>
+                                    </label>
+                                    <input type="range" id="ctrl-ka" min="0" max="1" step="0.05" value="0.2" style="width:100%">
+                                </div>
+                                <div>
+                                    <label style="display:flex; justify-content: space-between;">
+                                        Diffuse Coefficient (Kd): <span id="val-kd">0.7</span>
+                                    </label>
+                                    <input type="range" id="ctrl-kd" min="0" max="1" step="0.05" value="0.7" style="width:100%">
+                                </div>
+                                <div>
+                                    <label style="display:flex; justify-content: space-between;">
+                                        Specular Coefficient (Ks): <span id="val-ks">0.5</span>
+                                    </label>
+                                    <input type="range" id="ctrl-ks" min="0" max="1" step="0.05" value="0.5" style="width:100%">
+                                </div>
+                                <div>
+                                    <label style="display:flex; justify-content: space-between;">
+                                        Shininess (Alpha): <span id="val-alpha">32</span>
+                                    </label>
+                                    <input type="range" id="ctrl-alpha" min="1" max="128" step="1" value="32" style="width:100%">
+                                </div>
+                                <hr style="border:0; border-top:1px solid var(--border-color); margin: 10px 0;">
+                                <div>
+                                    <label>Light Position (X):</label>
+                                    <input type="range" id="ctrl-lx" min="-2" max="2" step="0.1" value="1" style="width:100%">
+                                </div>
+                                <div>
+                                    <label>Light Position (Y):</label>
+                                    <input type="range" id="ctrl-ly" min="-2" max="2" step="0.1" value="1" style="width:100%">
+                                </div>
+                                <div>
+                                    <label>Light Position (Z):</label>
+                                    <input type="range" id="ctrl-lz" min="0.1" max="5" step="0.1" value="2" style="width:100%">
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card complexity-panel" style="margin-top: 20px;">
+                        <h3>Complexity & Exam Tips</h3>
+                        <div class="theory-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Time Complexity:</strong> O(P)<br><small>P is number of pixels for Phong shading.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Space Complexity:</strong> O(1)<br><small>Per-pixel calculation.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Advantages:</strong> Most realistic basic shading.</div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Disadvantages:</strong> Computationally expensive without GPU.</div>
+                            <div style="grid-column: span 2; border-left: 3px solid var(--warning-color); padding-left: 10px; margin-top: 5px;"><strong>Exam Tip:</strong> Be able to write the full Phong equation: I = Ka*Ia + Kd*Id*(N.L) + Ks*Is*(R.V)^n</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page 8: Texture Mapping -->
+            <section id="page-texture" class="page">
+                <header class="page-header">
+                    <h1>Texture Mapping</h1>
+                    <p>Wrapping a 2D image around a 3D object to add realistic detail.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>UV Coordinates</h3>
+                            <p>Textures use a 2D coordinate system (U, V) ranging from 0.0 to 1.0. These are mapped to the (X, Y, Z) vertices of 3D geometry.</p>
+                            <div style="background:#000; padding:10px; margin-top:10px; border-radius:4px; font-family:monospace; color:var(--warning-color);">
+                                (U=0, V=0) = Bottom-Left<br>
+                                (U=1, V=1) = Top-Right
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>OpenGL Workflow</h3>
+                            <ul style="font-family:monospace; font-size: 0.9rem;">
+                                <li><code>glGenTextures()</code> - Generate texture ID</li>
+                                <li><code>glBindTexture()</code> - Make texture active</li>
+                                <li><code>glTexImage2D()</code> - Load image data</li>
+                                <li><code>glEnable(GL_TEXTURE_2D)</code> - Turn on mapping</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Interactive Texture Mapping Demo</h3>
+                        <div style="display:flex; gap: 40px; flex-wrap: wrap;">
+                            
+                            <div style="flex: 1; min-width: 300px;">
+                                <h4>1. Select a 2D Texture (UV Space)</h4>
+                                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                    <div class="tex-thumb active" data-tex="brick" style="width: 60px; height: 60px; background: repeating-linear-gradient(45deg, #a52a2a, #a52a2a 10px, #cccccc 10px, #cccccc 12px); border: 2px solid var(--primary-color); cursor:pointer;"></div>
+                                    <div class="tex-thumb" data-tex="wood" style="width: 60px; height: 60px; background: repeating-radial-gradient(ellipse at center, #8b5a2b, #8b5a2b 10px, #a0522d 15px); border: 2px solid transparent; cursor:pointer;"></div>
+                                    <div class="tex-thumb" data-tex="metal" style="width: 60px; height: 60px; background: linear-gradient(135deg, #999, #eee, #999); border: 2px solid transparent; cursor:pointer;"></div>
+                                    <div class="tex-thumb" data-tex="earth" style="width: 60px; height: 60px; background: radial-gradient(circle, #2e8b57 20%, #1e90ff 80%); border: 2px solid transparent; cursor:pointer;"></div>
+                                </div>
+                                <div style="margin-top: 20px; width: 200px; height: 200px; border: 1px solid var(--border-color); position: relative; background: repeating-linear-gradient(45deg, #a52a2a, #a52a2a 10px, #cccccc 10px, #cccccc 12px);" id="active-tex-preview">
+                                    <span style="position:absolute; bottom:-25px; left:0; color:var(--text-muted);">(0,0)</span>
+                                    <span style="position:absolute; bottom:-25px; right:0; color:var(--text-muted);">(1,0) U&rarr;</span>
+                                    <span style="position:absolute; top:-25px; left:0; color:var(--text-muted);">(0,1) V&uarr;</span>
+                                    <span style="position:absolute; top:-25px; right:0; color:var(--text-muted);">(1,1)</span>
+                                </div>
+                            </div>
+
+                            <div style="flex: 1; min-width: 300px;">
+                                <h4>2. Mapped onto 3D Object</h4>
+                                <div style="margin-top: 15px; display:flex; gap: 10px; margin-bottom: 20px;">
+                                    <button class="btn btn-primary obj-btn" data-obj="cube">Cube</button>
+                                    <button class="btn obj-btn" data-obj="sphere">Sphere</button>
+                                    <button class="btn obj-btn" data-obj="cylinder">Cylinder</button>
+                                </div>
+                                
+                                <!-- CSS 3D Scene -->
+                                <div class="scene3d" style="width: 200px; height: 200px; perspective: 600px; margin: 0 auto; margin-top: 40px;">
+                                    <!-- Cube -->
+                                    <div id="obj-cube" class="cube-container show" style="width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: rotate3d 10s infinite linear;">
+                                        <div class="cube-face front mapped-tex"></div>
+                                        <div class="cube-face back mapped-tex"></div>
+                                        <div class="cube-face right mapped-tex"></div>
+                                        <div class="cube-face left mapped-tex"></div>
+                                        <div class="cube-face top mapped-tex"></div>
+                                        <div class="cube-face bottom mapped-tex"></div>
+                                    </div>
+                                    
+                                    <!-- Faked Sphere (Using border-radius and inset shadow) -->
+                                    <div id="obj-sphere" class="sphere-container mapped-tex" style="width: 200px; height: 200px; border-radius: 50%; display: none; box-shadow: inset -20px -20px 40px rgba(0,0,0,0.8), inset 10px 10px 20px rgba(255,255,255,0.4); animation: rotateBg 10s infinite linear;">
+                                    </div>
+                                    
+                                    <!-- Faked Cylinder -->
+                                    <div id="obj-cylinder" class="cylinder-container" style="width: 120px; height: 200px; margin: 0 auto; position: relative; transform-style: preserve-3d; display: none;">
+                                        <div class="cyl-top mapped-tex" style="position:absolute; width:120px; height:40px; border-radius:50%; top:-20px; box-shadow: inset 0 -10px 20px rgba(0,0,0,0.5);"></div>
+                                        <div class="cyl-body mapped-tex" style="position:absolute; width:120px; height:200px; top:0; animation: rotateBg 5s infinite linear; box-shadow: inset -15px 0 20px rgba(0,0,0,0.7), inset 15px 0 20px rgba(0,0,0,0.5);"></div>
+                                        <div class="cyl-bottom mapped-tex" style="position:absolute; width:120px; height:40px; border-radius:50%; bottom:-20px; box-shadow: inset 0 -10px 20px rgba(0,0,0,0.8);"></div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    <div class="card complexity-panel" style="margin-top: 20px;">
+                        <h3>Complexity & Exam Tips</h3>
+                        <div class="theory-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Time Complexity:</strong> O(P)<br><small>Per-pixel texture lookup.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Space Complexity:</strong> O(T)<br><small>Where T is the size of the texture image in memory.</small></div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Advantages:</strong> Adds immense realism without geometry overhead.</div>
+                            <div style="background: var(--bg-color); padding: 10px; border-radius: 4px;"><strong>Disadvantages:</strong> Can look pixelated up close (needs filtering).</div>
+                            <div style="grid-column: span 2; border-left: 3px solid var(--warning-color); padding-left: 10px; margin-top: 5px;"><strong>Exam Tip:</strong> Always remember UV coordinates go from 0.0 to 1.0 regardless of actual image pixel size.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page 9: VR Appearance Modeling -->
+            <section id="page-vr" class="page">
+                <header class="page-header">
+                    <h1>VR Appearance Modeling</h1>
+                    <p>Creating immersive and realistic virtual worlds.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid" style="margin-bottom: 20px;">
+                        <div class="card">
+                            <h3>Elements of Realism</h3>
+                            <ul>
+                                <li><strong>Geometry:</strong> High polygon counts for detail.</li>
+                                <li><strong>Lighting:</strong> Global illumination and shadows.</li>
+                                <li><strong>Materials:</strong> Physically Based Rendering (PBR).</li>
+                                <li><strong>Textures:</strong> High resolution and normal mapping.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Interactive Realism Configurator</h3>
+                        <div style="display:flex; gap: 40px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 300px;">
+                                <div id="vr-preview" style="width: 100%; height: 300px; background: linear-gradient(#1e90ff, #87ceeb 50%, #2e8b57 50%, #006400); border-radius: 8px; position: relative; overflow: hidden; transition: all 0.5s;">
+                                    <div id="vr-sun" style="position: absolute; top: 20px; left: 20px; width: 60px; height: 60px; background: #fffacd; border-radius: 50%; box-shadow: 0 0 20px #fffacd; transition: all 0.5s;"></div>
+                                    <div id="vr-cube" style="position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 80px; height: 80px; background: #a52a2a; transition: all 0.5s; box-shadow: 20px 20px 0 rgba(0,0,0,0.5);"></div>
+                                </div>
+                            </div>
+                            <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px;">
+                                <label><input type="checkbox" id="vr-tog-tex" checked> Enable Textures</label>
+                                <label><input type="checkbox" id="vr-tog-light" checked> Advanced Lighting</label>
+                                <label><input type="checkbox" id="vr-tog-shadow" checked> Real-time Shadows</label>
+                                <label><input type="checkbox" id="vr-tog-geo" checked> High-Poly Geometry (Rounded)</label>
+                                
+                                <div style="margin-top: 20px; padding: 10px; background: rgba(88,166,255,0.1); border-left: 4px solid var(--primary-color);">
+                                    <p id="vr-feedback">Status: Immersive realism enabled. The scene feels lifelike.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 10: Modern Trends -->
+            <section id="page-trends" class="page">
+                <header class="page-header">
+                    <h1>Applications & Modern Trends</h1>
+                    <p>Where computer graphics is heading next.</p>
+                </header>
+                <div class="page-content">
+                    <h3>Applications</h3>
+                    <div class="applications-grid" style="margin-bottom: 30px; gap: 15px;">
+                        <div class="card" style="flex: 1; min-width: 150px; text-align: center; margin-bottom: 0;">
+                            <h4 style="color:var(--primary-color)">Gaming</h4>
+                            <p style="font-size: 0.85rem;">Photorealistic worlds.</p>
+                        </div>
+                        <div class="card" style="flex: 1; min-width: 150px; text-align: center; margin-bottom: 0;">
+                            <h4 style="color:var(--success-color)">Medical</h4>
+                            <p style="font-size: 0.85rem;">3D MRI and scanning.</p>
+                        </div>
+                        <div class="card" style="flex: 1; min-width: 150px; text-align: center; margin-bottom: 0;">
+                            <h4 style="color:var(--warning-color)">Engineering</h4>
+                            <p style="font-size: 0.85rem;">CAD and prototyping.</p>
+                        </div>
+                        <div class="card" style="flex: 1; min-width: 150px; text-align: center; margin-bottom: 0;">
+                            <h4 style="color:var(--danger-color)">Simulation</h4>
+                            <p style="font-size: 0.85rem;">Flight & driving simulators.</p>
+                        </div>
+                    </div>
+
+                    <h3>Modern Trends</h3>
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h4 style="color:var(--primary-color);">Real-Time Ray Tracing</h4>
+                            <p>Calculating the exact path of light rays in real-time, enabling perfect reflections and soft shadows.</p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:var(--primary-color);">AI Graphics (DLSS)</h4>
+                            <p>Using Deep Learning to upscale lower resolution images to high resolution in real-time without performance hits.</p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:var(--primary-color);">Digital Twins</h4>
+                            <p>Creating exact digital 3D replicas of physical factories, cities, or machines for monitoring and testing.</p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:var(--primary-color);">Metaverse</h4>
+                            <p>Interconnected virtual 3D spaces meant for social interaction, work, and entertainment.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Comparison -->
+            <!-- Page: Comparison -->
+            <section id="page-compare" class="page">
+                <header class="page-header">
+                    <h1>DDA vs Bresenham Comparison</h1>
+                    <p>Observe both algorithms drawing the exact same line simultaneously.</p>
+                </header>
+                <div class="page-content">
+                    <div class="card">
+                        <h3>Run Comparison</h3>
+                        <div style="display:flex; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label>P1 (x1, y1): </label>
+                                <input type="number" id="cmp-x1" value="2" style="width:50px">
+                                <input type="number" id="cmp-y1" value="2" style="width:50px">
+                            </div>
+                            <div>
+                                <label>P2 (x2, y2): </label>
+                                <input type="number" id="cmp-x2" value="18" style="width:50px">
+                                <input type="number" id="cmp-y2" value="7" style="width:50px">
+                            </div>
+                            <button class="btn btn-primary" id="cmp-run">Compare Algorithms</button>
+                        </div>
+
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 300px; text-align: center;">
+                                <h4 style="color:var(--danger-color)">DDA Algorithm</h4>
+                                <canvas id="cmp-dda-canvas" width="300" height="300" style="background:#000; border:1px solid var(--border-color);"></canvas>
+                            </div>
+                            <div style="flex: 1; min-width: 300px; text-align: center;">
+                                <h4 style="color:var(--success-color)">Bresenham Algorithm</h4>
+                                <canvas id="cmp-bres-canvas" width="300" height="300" style="background:#000; border:1px solid var(--border-color);"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(88,166,255,0.1); border-radius: 4px; border-left: 4px solid var(--primary-color);">
+                            <h4 style="margin-bottom: 10px;">Why do they look different?</h4>
+                            <p>DDA uses <code>round()</code> which can pull the pixel selection in slightly different directions compared to Bresenham's exact integer <code>Pk</code> decision, especially on lines with specific fractional slopes. Bresenham is considered the mathematically "truer" representation of the ideal line.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page: Survival Sheet -->
+            <section id="page-survival" class="page">
+                <header class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1>Exam Survival Sheet</h1>
+                        <p>The ultimate 5-minute pre-exam cram guide. Memorize these formulas.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.print()">Export Revision PDF</button>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="card" style="border-top: 4px solid var(--primary-color);">
+                            <h3 style="color:var(--primary-color);">DDA Line Algorithm</h3>
+                            <pre style="background:var(--bg-color); padding:10px; font-size:1.1rem; border-radius:4px;">
+dx = x2 - x1
+dy = y2 - y1
+steps = max(|dx|, |dy|)
+
+xInc = dx / steps
+yInc = dy / steps
+
+x = x + xInc
+y = y + yInc
+Plot( round(x), round(y) )</pre>
+                        </div>
+                        
+                        <div class="card" style="border-top: 4px solid var(--success-color);">
+                            <h3 style="color:var(--success-color);">Bresenham's Line</h3>
+                            <pre style="background:var(--bg-color); padding:10px; font-size:1.1rem; border-radius:4px;">
+dx = |x2 - x1|
+dy = |y2 - y1|
+
+Initial P₀ = 2dy - dx
+
+If Pk < 0:
+   Next P = Pk + 2dy
+   x = x + 1
+
+If Pk ≥ 0:
+   Next P = Pk + 2dy - 2dx
+   x = x + 1
+   y = y + 1</pre>
+                        </div>
+
+                        <div class="card" style="border-top: 4px solid var(--warning-color);">
+                            <h3 style="color:var(--warning-color);">Cohen-Sutherland Clipping</h3>
+                            <pre style="background:var(--bg-color); padding:10px; font-size:1.1rem; border-radius:4px;">
+Outcode Sequence: TBRL
+(Top, Bottom, Right, Left)
+
+TOP    = 1000
+BOTTOM = 0100
+RIGHT  = 0010
+LEFT   = 0001
+
+Accept if: Code1 OR Code2 == 0000
+Reject if: Code1 AND Code2 != 0000</pre>
+                        </div>
+
+                        <div class="card" style="border-top: 4px solid var(--danger-color);">
+                            <h3 style="color:var(--danger-color);">Phong Reflection Model</h3>
+                            <pre style="background:var(--bg-color); padding:10px; font-size:1.1rem; border-radius:4px;">
+I = Ambient + Diffuse + Specular
+
+I = (Ka * Ia) + 
+    (Kd * Id * (N·L)) + 
+    (Ks * Is * (R·V)^n)
+
+Ka, Kd, Ks = Material Constants
+Ia, Id, Is = Light Intensities
+n = Shininess
+N = Normal, L = Light Dir
+R = Reflection, V = View Dir</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Viva Questions -->
+            <section id="page-viva" class="page">
+                <header class="page-header">
+                    <h1>Common Viva Questions</h1>
+                    <p>Be prepared for direct examiner questions.</p>
+                </header>
+                <div class="page-content">
+                    <div class="card">
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color:var(--primary-color);">Q: Why is DDA less accurate than Bresenham?</h4>
+                            <p><strong>A:</strong> DDA uses floating-point arithmetic. Successive additions of fractional numbers (xInc, yInc) cause rounding errors to accumulate, eventually pushing the plotted pixel off the ideal mathematical line. Bresenham uses exact integer mathematics.</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color:var(--primary-color);">Q: Why is Bresenham faster?</h4>
+                            <p><strong>A:</strong> It relies entirely on integer addition, subtraction, and bit-shifting (multiplying by 2). It avoids expensive floating-point operations and the `round()` function.</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color:var(--primary-color);">Q: What is an outcode in Cohen-Sutherland?</h4>
+                            <p><strong>A:</strong> A 4-bit binary code assigned to a point that describes its position relative to the viewing window (Top, Bottom, Right, Left). It allows for rapid bitwise AND/OR operations to accept or reject lines.</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color:var(--primary-color);">Q: Explain the difference between Flat, Gouraud, and Phong shading.</h4>
+                            <p><strong>A:</strong> <br>- <strong>Flat:</strong> Calculates light once per polygon. Very blocky.<br>- <strong>Gouraud:</strong> Calculates light at vertices and interpolates colors across the polygon. Smoother, but misses specular highlights in the center of large polygons.<br>- <strong>Phong:</strong> Interpolates normal vectors across the polygon and calculates the full lighting equation for every single pixel. Most realistic, most expensive.</p>
+                        </div>
+                        <div>
+                            <h4 style="color:var(--primary-color);">Q: What happens if the Aspect Ratio of the World Window doesn't match the Viewport?</h4>
+                            <p><strong>A:</strong> The resulting image on the screen will be stretched or squashed (distorted). To maintain proportional geometry, `(Window Width / Window Height)` must equal `(Viewport Width / Viewport Height)`.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page: Exam Mode -->
+            <section id="page-exam-mode" class="page">
+                <header class="page-header">
+                    <h1>Challenge & Exam Mode</h1>
+                    <p>Test your skills. Generate a problem, solve it visually, and get instant feedback.</p>
+                </header>
+                <div class="page-content">
+                    <div class="card">
+                        <h3>1. Generate Problem</h3>
+                        <div style="display:flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+                            <select id="exam-algo" style="padding: 8px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--border-color); border-radius: 4px;">
+                                <option value="dda">DDA Algorithm</option>
+                                <option value="bresenham">Bresenham Algorithm</option>
+                            </select>
+                            <select id="exam-diff" style="padding: 8px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--border-color); border-radius: 4px;">
+                                <option value="easy">Easy (Positive Slope < 1)</option>
+                                <option value="medium">Medium (Positive Slope > 1)</option>
+                                <option value="hard">Hard (Negative / Steep)</option>
+                            </select>
+                            <button class="btn btn-primary" id="exam-gen">Generate Random Problem</button>
+                        </div>
+                        <div id="exam-prompt" style="font-size: 1.2rem; margin-bottom: 20px; color: var(--warning-color); display: none;">
+                            Draw a line from <strong>P1(<span id="ex-x1"></span>, <span id="ex-y1"></span>)</strong> to <strong>P2(<span id="ex-x2"></span>, <span id="ex-y2"></span>)</strong> using <span id="ex-algo-name"></span>.
+                        </div>
+                    </div>
+
+                    <div class="card" id="exam-workspace" style="display: none;">
+                        <h3>2. Interactive Answer Grid</h3>
+                        <p>Click the pixels below to plot your answer. The start and end points are already marked in blue.</p>
+                        
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <div>
+                                <canvas id="exam-canvas" width="400" height="400" style="background:#000; border:1px solid var(--border-color); cursor: crosshair;"></canvas>
+                                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                                    <button class="btn btn-success" id="exam-submit">Check Answer</button>
+                                    <button class="btn" id="exam-clear">Clear My Pixels</button>
+                                </div>
+                            </div>
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <div id="exam-feedback" style="padding: 15px; background: var(--bg-color); border-radius: 4px; border: 1px solid var(--border-color); min-height: 100px;">
+                                    Submit your answer to see feedback.
+                                </div>
+                                <div id="exam-solution-box" style="margin-top: 20px; display: none;">
+                                    <button class="btn" id="exam-show-sol" style="width: 100%;">Show Correct Solution Steps</button>
+                                    <div id="exam-sol-content" style="margin-top: 10px; font-family: monospace; max-height: 200px; overflow-y: auto; background: #000; padding: 10px; border-radius: 4px; display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page: Playground -->
+            <section id="page-playground" class="page">
+                <header class="page-header">
+                    <h1>Graphics Algorithms Playground</h1>
+                    <p>A unified sandbox to freely test algorithms.</p>
+                </header>
+                <div class="page-content">
+                    <div class="card">
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <button class="btn btn-primary pg-mode active" data-mode="dda">DDA Line</button>
+                            <button class="btn pg-mode" data-mode="bresenham">Bresenham Line</button>
+                            <button class="btn pg-mode" data-mode="cs-clip">Cohen-Sutherland Clip</button>
+                            <button class="btn pg-mode" data-mode="sh-clip">Sutherland-Hodgman Poly Clip</button>
+                            <div style="flex-grow: 1;"></div>
+                            <button class="btn btn-danger" id="pg-clear">Clear Playground</button>
+                        </div>
+                        
+                        <div id="pg-instructions" style="background: rgba(88,166,255,0.1); padding: 10px; border-left: 4px solid var(--primary-color); margin-bottom: 15px;">
+                            Click two points on the grid to draw a line using DDA.
+                        </div>
+
+                        <div style="text-align: center;">
+                            <canvas id="pg-canvas" width="600" height="400" style="background:#000; border:1px solid var(--border-color); cursor: crosshair;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 11: Practice & Quiz -->
+            <section id="page-practice" class="page">
+                <header class="page-header">
+                    <h1>Practice & Quiz</h1>
+                    <p>Test your knowledge and prepare for exams.</p>
+                </header>
+                <div class="page-content">
+                    
+                    <div class="theory-grid">
+                        <div class="card">
+                            <h3>Algorithm Inspector</h3>
+                            <p>Enter values to instantly get the steps for exam verification.</p>
+                            <div style="display:flex; gap: 10px; margin-top: 10px;">
+                                <select id="calc-algo" style="padding: 5px; background:var(--bg-color); color:var(--text-color); border:1px solid var(--border-color);">
+                                    <option value="dda">DDA Line</option>
+                                    <option value="bres">Bresenham Line</option>
+                                </select>
+                                <input type="number" id="calc-x1" placeholder="x1" style="width: 50px;">
+                                <input type="number" id="calc-y1" placeholder="y1" style="width: 50px;">
+                                <input type="number" id="calc-x2" placeholder="x2" style="width: 50px;">
+                                <input type="number" id="calc-y2" placeholder="y2" style="width: 50px;">
+                                <button class="btn btn-primary" id="calc-run">Solve</button>
+                            </div>
+                            <div id="calc-result" style="margin-top: 15px; background:#000; padding:10px; border-radius:4px; font-family:monospace; max-height: 200px; overflow-y: auto;">
+                                Result will appear here...
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Quick Exam Revision Notes</h3>
+                            <ul style="font-size: 0.9rem; line-height: 1.8;">
+                                <li><strong>DDA vs Bresenham:</strong> Bresenham is faster, uses integers only.</li>
+                                <li><strong>Outcodes:</strong> Top(1000), Bottom(0100), Right(0010), Left(0001).</li>
+                                <li><strong>Phong Model:</strong> Ambient + Diffuse + Specular.</li>
+                                <li><strong>World to Viewport Mapping:</strong> Aspect ratio must match to avoid distortion.</li>
+                                <li><strong>Texture Mapping:</strong> Uses (U,V) coordinates from 0.0 to 1.0.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Knowledge Quiz</h3>
+                        <div id="quiz-container">
+                            <div class="quiz-question">
+                                <h4>1. Which algorithm uses floating-point arithmetic?</h4>
+                                <label><input type="radio" name="q1" value="dda"> DDA</label><br>
+                                <label><input type="radio" name="q1" value="bresenham"> Bresenham</label><br>
+                                <label><input type="radio" name="q1" value="cohen"> Cohen-Sutherland</label>
+                            </div>
+                            <div class="quiz-question" style="margin-top: 20px;">
+                                <h4>2. In Cohen-Sutherland, a line is trivially rejected if the logical AND of its outcodes is:</h4>
+                                <label><input type="radio" name="q2" value="0000"> Exactly 0000</label><br>
+                                <label><input type="radio" name="q2" value="not0000"> Not 0000</label><br>
+                                <label><input type="radio" name="q2" value="1111"> 1111</label>
+                            </div>
+                            <button class="btn btn-success" id="quiz-submit" style="margin-top: 20px;">Submit Answers</button>
+                            <div id="quiz-result" style="margin-top: 15px; font-weight: bold;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <!-- Page: Dashboard -->
+            <section id="page-dashboard" class="page">
+                <header class="page-header">
+                    <h1>Analytics Dashboard</h1>
+                    <p>Detailed statistics on your study progress and exam readiness.</p>
+                </header>
+                <div class="page-content">
+                    <div class="theory-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="card" style="text-align: center;">
+                            <h3 style="color: var(--text-color); margin-bottom: 15px;">Exam Readiness</h3>
+                            <div style="font-size: 3rem; font-weight: bold; color: var(--success-color);" id="dash-readiness">0%</div>
+                            <div style="background: var(--bg-color); height: 10px; border-radius: 5px; margin: 15px 0; overflow: hidden; width: 80%; margin-left: auto; margin-right: auto;">
+                                <div id="dash-readiness-bar" style="background: var(--success-color); height: 100%; width: 0%;"></div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-color); opacity: 0.8;">
+                                Formula: 40% Progress + 40% Challenge Accuracy + 20% Quiz Performance
+                            </p>
+                        </div>
+                        
+                        <div class="card">
+                            <h3 style="margin-bottom: 15px;">Detailed Breakdown</h3>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1rem;">
+                                <span>Topics Completed:</span>
+                                <strong id="dash-prog-text" style="color: var(--primary-color);">0 / 16</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1rem;">
+                                <span>Challenge Accuracy:</span>
+                                <strong id="dash-acc-text" style="color: var(--primary-color);">0%</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1rem;">
+                                <span>Best Quiz Score:</span>
+                                <strong id="dash-quiz-text" style="color: var(--primary-color);">0%</strong>
+                            </div>
+                            
+                            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+                            
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Best Topic:</span>
+                                <strong id="dash-best-topic" style="color: var(--success-color);">N/A</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Weakest Topic:</span>
+                                <strong id="dash-worst-topic" style="color: var(--danger-color);">N/A</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="js/main.js"></script>
+    <script src="js/coords.js"></script>
+    <script src="js/dda.js"></script>
+    <script src="js/bresenham.js"></script>
+    <script src="js/lineclip.js"></script>
+    <script src="js/polyclip.js"></script>
+    <script src="js/lighting.js"></script>
+    <script src="js/texture.js"></script>
+    <script src="js/vr.js"></script>
+    <script src="js/practice.js"></script>
+    <script src="js/comparison.js"></script>
+    <script src="js/exam.js"></script>
+    <script src="js/playground.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html>
