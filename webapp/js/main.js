@@ -3,6 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const pages = document.querySelectorAll('.page');
     const checkboxes = document.querySelectorAll('.prog-chk');
 
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+    }
+
     // Handle Navigation
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -17,6 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add('active');
             const targetId = link.getAttribute('data-target');
             document.getElementById(targetId).classList.add('active');
+            
+            // Close sidebar on mobile after clicking
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+            }
         });
     });
 
