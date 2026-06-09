@@ -212,15 +212,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- EVENTS ---
 
     canvas.addEventListener('contextmenu', e => {
-        // Right click finishes polygon
+        // Right click finishes polygon (fallback for desktop)
         e.preventDefault();
+        finishPolygon();
+    });
+
+    const btnFinishPoly = document.getElementById('pg-finish-poly');
+    if(btnFinishPoly) {
+        btnFinishPoly.addEventListener('click', finishPolygon);
+    }
+
+    function finishPolygon() {
         if (mode === 'sh-clip' && polyPoints.length > 2) {
             let clipped = clipPoly(polyPoints);
             lines.push({type: 'poly', vertices: clipped});
             polyPoints = [];
             renderAll();
         }
-    });
+    }
 
     canvas.addEventListener('click', (e) => {
         const rect = canvas.getBoundingClientRect();
@@ -264,10 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
             points = [];
             polyPoints = [];
             
+            if(btnFinishPoly) {
+                btnFinishPoly.style.display = mode === 'sh-clip' ? 'inline-block' : 'none';
+            }
+
             if(mode === 'dda') instr.textContent = "Click two points on the grid to draw a line using DDA.";
             if(mode === 'bresenham') instr.textContent = "Click two points on the grid to draw a line using Bresenham.";
             if(mode === 'cs-clip') instr.textContent = "Click two points to draw a line. It will be clipped against the window.";
-            if(mode === 'sh-clip') instr.textContent = "Left-click multiple points to define a polygon. Right-click to finish and clip it.";
+            if(mode === 'sh-clip') instr.textContent = "Click multiple points to define a polygon. Click 'Finish Polygon' to clip it.";
             
             renderAll();
         });
