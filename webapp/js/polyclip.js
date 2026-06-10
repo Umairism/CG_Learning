@@ -21,9 +21,35 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     let currentPoly = [...initialPoly];
+    let clippingStarted = false;
+
+    function toLogical(p) {
+        return {
+            x: Math.round((p.x - 200) / 10),
+            y: Math.round((200 - p.y) / 10)
+        };
+    }
+
+    function drawGrid() {
+        ctx.strokeStyle = '#30363d';
+        ctx.lineWidth = 1;
+        
+        for(let i=0; i<=40; i+=2) {
+            ctx.beginPath(); ctx.moveTo(i*10, 0); ctx.lineTo(i*10, canvas.height); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, i*10); ctx.lineTo(canvas.width, i*10); ctx.stroke();
+        }
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#58a6ff';
+        ctx.lineWidth = 2;
+        ctx.moveTo(200, 0); ctx.lineTo(200, 400);
+        ctx.moveTo(0, 200); ctx.lineTo(400, 200);
+        ctx.stroke();
+    }
 
     function drawScene(highlightEdge = null) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGrid();
         
         // Draw Window
         ctx.strokeStyle = '#58a6ff';
@@ -59,11 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.stroke();
             
             // Draw vertices
-            ctx.fillStyle = '#fff';
             currentPoly.forEach(p => {
+                ctx.fillStyle = '#fff';
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
                 ctx.fill();
+                
+                // Draw coordinate text
+                const lp = toLogical(p);
+                ctx.fillStyle = '#8b949e';
+                ctx.font = '10px monospace';
+                ctx.fillText(`(${lp.x},${lp.y})`, p.x + 8, p.y - 8);
             });
         }
     }
@@ -88,12 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if(i1 && i2) {
                 // Inside -> Inside
                 newPoly.push(p2);
-                logAction(`Inside &rarr; Inside: Added (${Math.round(p2.x)}, ${Math.round(p2.y)})`);
+                let l2 = toLogical(p2);
+                logAction(`Inside &rarr; Inside: Added (${l2.x}, ${l2.y})`);
             } else if(i1 && !i2) {
                 // Inside -> Outside
                 let sect = intersect(p1, p2, edge);
                 newPoly.push(sect);
-                logAction(`Inside &rarr; Outside: Added Intersection (${Math.round(sect.x)}, ${Math.round(sect.y)})`);
+                let ls = toLogical(sect);
+                logAction(`Inside &rarr; Outside: Added Intersection (${ls.x}, ${ls.y})`);
             } else if(!i1 && !i2) {
                 // Outside -> Outside
                 logAction(`Outside &rarr; Outside: Added Nothing`);
@@ -102,9 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 let sect = intersect(p1, p2, edge);
                 newPoly.push(sect);
                 newPoly.push(p2);
-                logAction(`Outside &rarr; Inside: Added Intersection (${Math.round(sect.x)}, ${Math.round(sect.y)}) and (${Math.round(p2.x)}, ${Math.round(p2.y)})`);
+                let ls = toLogical(sect);
+                let l2 = toLogical(p2);
+                logAction(`Outside &rarr; Inside: Added Intersection (${ls.x}, ${ls.y}) and (${l2.x}, ${l2.y})`);
             }
         }
+        
+        clippingStarted = true;
         
         currentPoly = newPoly;
         drawScene(edge);
@@ -144,14 +182,49 @@ document.addEventListener('DOMContentLoaded', () => {
     btnBottom.addEventListener('click', () => { clipPolygon('bottom'); btnBottom.disabled = true; });
 
     btnReset.addEventListener('click', () => {
-        currentPoly = [...initialPoly];
+        currentPoly = initialPoly.map(p => ({...p})); // deep copy
+        clippingStarted = false;
         btnLeft.disabled = false;
         btnRight.disabled = false;
         btnTop.disabled = false;
         btnBottom.disabled = false;
-        logDiv.innerHTML = 'Initial polygon loaded.<br>Waiting for edge clipping...<br><br>';
+        logDiv.innerHTML = 'Initial polygon loaded. You can drag the vertices.<br>Waiting for edge clipping...<br><br>';
         drawScene();
     });
 
+    let draggingPoint = null;
+    
+    canvas.addEventListener('mousedown', (e) => {
+        if(clippingStarted) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        for(let i=0; i<initialPoly.length; i++) {
+            const p = initialPoly[i];
+            const dx = mouseX - p.x;
+            const dy = mouseY - p.y;
+            if(dx*dx + dy*dy < 64) {
+                draggingPoint = p;
+                break;
+            }
+        }
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        if(draggingPoint) {
+            const rect = canvas.getBoundingClientRect();
+            draggingPoint.x = e.clientX - rect.left;
+            draggingPoint.y = e.clientY - rect.top;
+            currentPoly = initialPoly.map(p => ({...p}));
+            drawScene();
+        }
+    });
+
+    canvas.addEventListener('mouseup', () => { draggingPoint = null; });
+    canvas.addEventListener('mouseleave', () => { draggingPoint = null; });
+
+    logDiv.innerHTML = 'Initial polygon loaded. You can drag the vertices.<br>Waiting for edge clipping...<br><br>';
     drawScene();
 });
