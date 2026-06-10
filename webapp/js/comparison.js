@@ -12,34 +12,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctxDDA = cDDA.getContext('2d');
     const ctxBres = cBres.getContext('2d');
 
-    const gridSize = 15;
-    const cols = cDDA.width / gridSize;
-    const rows = cDDA.height / gridSize;
+    let gridSize = 15;
+    let cols = cDDA.width / gridSize;
+    let rows = cDDA.height / gridSize;
 
     function drawGrid(ctx, canvas) {
         ctx.clearRect(0,0,canvas.width, canvas.height);
         ctx.strokeStyle = '#30363d';
         ctx.lineWidth = 1;
-        for(let i=0; i<=cols; i++) {
+        
+        let requiredRange = cols / 2;
+        let lineInterval = 1;
+        if (requiredRange > 30) lineInterval = 5;
+        else if (requiredRange > 15) lineInterval = 2;
+
+        for(let i=0; i<=cols; i+=lineInterval) {
             ctx.beginPath(); ctx.moveTo(i*gridSize, 0); ctx.lineTo(i*gridSize, canvas.height); ctx.stroke();
         }
-        for(let i=0; i<=rows; i++) {
+        for(let i=0; i<=rows; i+=lineInterval) {
             ctx.beginPath(); ctx.moveTo(0, i*gridSize); ctx.lineTo(canvas.width, i*gridSize); ctx.stroke();
         }
+        
+        const centerX = cols / 2;
+        const centerY = rows / 2;
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#58a6ff';
+        ctx.lineWidth = 2;
+        ctx.moveTo(centerX * gridSize, 0);
+        ctx.lineTo(centerX * gridSize, canvas.height);
+        ctx.moveTo(0, centerY * gridSize);
+        ctx.lineTo(canvas.width, centerY * gridSize);
+        ctx.stroke();
     }
 
     function drawIdealLine(ctx, x1, y1, x2, y2) {
+        const centerX = cols / 2;
+        const centerY = rows / 2;
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(x1 * gridSize + gridSize/2, y1 * gridSize + gridSize/2);
-        ctx.lineTo(x2 * gridSize + gridSize/2, y2 * gridSize + gridSize/2);
+        ctx.moveTo((centerX + x1) * gridSize + gridSize/2, (centerY - y1) * gridSize + gridSize/2);
+        ctx.lineTo((centerX + x2) * gridSize + gridSize/2, (centerY - y2) * gridSize + gridSize/2);
         ctx.stroke();
     }
 
     function plot(ctx, x, y, color) {
+        const centerX = cols / 2;
+        const centerY = rows / 2;
         ctx.fillStyle = color;
-        ctx.fillRect(x * gridSize + 1, y * gridSize + 1, gridSize - 2, gridSize - 2);
+        const drawX = centerX + x;
+        const drawY = centerY - y;
+        
+        const pxX = Math.floor(drawX * gridSize) + 1;
+        const pxY = Math.floor(drawY * gridSize) + 1;
+        const pxSize = Math.max(1, Math.ceil(gridSize) - 1);
+        
+        ctx.fillRect(pxX, pxY, pxSize, pxSize);
     }
 
     async function sleep(ms) {
@@ -49,6 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
     btnRun.addEventListener('click', async () => {
         let x1 = parseInt(inX1.value); let y1 = parseInt(inY1.value);
         let x2 = parseInt(inX2.value); let y2 = parseInt(inY2.value);
+
+        const maxCoord = Math.max(Math.abs(x1), Math.abs(y1), Math.abs(x2), Math.abs(y2));
+        const requiredRange = Math.max(10, Math.ceil(maxCoord) + 1);
+        cols = rows = 2 * requiredRange;
+        gridSize = cDDA.width / cols;
 
         drawGrid(ctxDDA, cDDA);
         drawGrid(ctxBres, cBres);

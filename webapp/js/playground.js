@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cols = canvas.width / gridSize;
     const rows = canvas.height / gridSize;
 
-    // Clipping Window Boundaries (fixed for clipping modes)
-    const xMin = 10;
-    const xMax = 30;
-    const yMin = 5;
-    const yMax = 20;
+    // Clipping Window Boundaries (relative to center)
+    const xMin = -10;
+    const xMax = 10;
+    const yMin = -5;
+    const yMax = 10;
 
     let points = []; // stores clicked points
     let lines = [];  // stores generated lines/shapes to persist drawings
@@ -32,23 +32,40 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath(); ctx.moveTo(0, i*gridSize); ctx.lineTo(canvas.width, i*gridSize); ctx.stroke();
         }
         
+        const centerX = Math.floor(cols / 2);
+        const centerY = Math.floor(rows / 2);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#58a6ff';
+        ctx.lineWidth = 2;
+        ctx.moveTo(centerX * gridSize, 0);
+        ctx.lineTo(centerX * gridSize, canvas.height);
+        ctx.moveTo(0, centerY * gridSize);
+        ctx.lineTo(canvas.width, centerY * gridSize);
+        ctx.stroke();
+        
         // Draw Window if in clip mode
         if (mode === 'cs-clip' || mode === 'sh-clip') {
             ctx.strokeStyle = 'rgba(255,255,255,0.4)';
             ctx.lineWidth = 2;
-            ctx.strokeRect(xMin*gridSize, yMin*gridSize, (xMax-xMin)*gridSize, (yMax-yMin)*gridSize);
+            ctx.strokeRect((centerX + xMin)*gridSize, (centerY - yMax)*gridSize, (xMax-xMin)*gridSize, (yMax-yMin)*gridSize);
         }
     }
 
     function plot(x, y, color) {
         ctx.fillStyle = color;
-        ctx.fillRect(x * gridSize + 1, y * gridSize + 1, gridSize - 2, gridSize - 2);
+        const centerX = Math.floor(cols / 2);
+        const centerY = Math.floor(rows / 2);
+        ctx.fillRect((centerX + x) * gridSize + 1, (centerY - y) * gridSize + 1, gridSize - 2, gridSize - 2);
     }
 
     function renderAll() {
         drawGrid();
 
         // Render persisted lines
+        const centerX = Math.floor(cols / 2);
+        const centerY = Math.floor(rows / 2);
+        
         lines.forEach(l => {
             if(l.type === 'dda' || l.type === 'bresenham' || l.type === 'clip-line') {
                 l.pixels.forEach(p => plot(p.x, p.y, l.color));
@@ -56,9 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.fillStyle = 'rgba(63, 185, 80, 0.5)';
                 ctx.beginPath();
                 if(l.vertices.length > 0) {
-                    ctx.moveTo(l.vertices[0].x * gridSize + gridSize/2, l.vertices[0].y * gridSize + gridSize/2);
+                    ctx.moveTo((centerX + l.vertices[0].x) * gridSize + gridSize/2, (centerY - l.vertices[0].y) * gridSize + gridSize/2);
                     for(let i=1; i<l.vertices.length; i++) {
-                        ctx.lineTo(l.vertices[i].x * gridSize + gridSize/2, l.vertices[i].y * gridSize + gridSize/2);
+                        ctx.lineTo((centerX + l.vertices[i].x) * gridSize + gridSize/2, (centerY - l.vertices[i].y) * gridSize + gridSize/2);
                     }
                     ctx.closePath();
                     ctx.fill();
@@ -72,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         points.forEach(p => {
             ctx.fillStyle = '#fff';
             ctx.beginPath();
-            ctx.arc(p.x * gridSize + gridSize/2, p.y * gridSize + gridSize/2, 4, 0, Math.PI*2);
+            ctx.arc((centerX + p.x) * gridSize + gridSize/2, (centerY - p.y) * gridSize + gridSize/2, 4, 0, Math.PI*2);
             ctx.fill();
         });
 
@@ -81,16 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.strokeStyle = '#58a6ff';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(polyPoints[0].x * gridSize + gridSize/2, polyPoints[0].y * gridSize + gridSize/2);
+            ctx.moveTo((centerX + polyPoints[0].x) * gridSize + gridSize/2, (centerY - polyPoints[0].y) * gridSize + gridSize/2);
             for(let i=1; i<polyPoints.length; i++) {
-                ctx.lineTo(polyPoints[i].x * gridSize + gridSize/2, polyPoints[i].y * gridSize + gridSize/2);
+                ctx.lineTo((centerX + polyPoints[i].x) * gridSize + gridSize/2, (centerY - polyPoints[i].y) * gridSize + gridSize/2);
             }
             ctx.stroke();
             
             polyPoints.forEach(p => {
                 ctx.fillStyle = '#58a6ff';
                 ctx.beginPath();
-                ctx.arc(p.x * gridSize + gridSize/2, p.y * gridSize + gridSize/2, 4, 0, Math.PI*2);
+                ctx.arc((centerX + p.x) * gridSize + gridSize/2, (centerY - p.y) * gridSize + gridSize/2, 4, 0, Math.PI*2);
                 ctx.fill();
             });
         }
@@ -233,8 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     canvas.addEventListener('click', (e) => {
         const rect = canvas.getBoundingClientRect();
-        const x = Math.floor((e.clientX - rect.left) / gridSize);
-        const y = Math.floor((e.clientY - rect.top) / gridSize);
+        const centerX = Math.floor(cols / 2);
+        const centerY = Math.floor(rows / 2);
+        const rawX = Math.floor((e.clientX - rect.left) / gridSize);
+        const rawY = Math.floor((e.clientY - rect.top) / gridSize);
+        const x = rawX - centerX;
+        const y = centerY - rawY;
 
         if (mode === 'sh-clip') {
             polyPoints.push({x, y});

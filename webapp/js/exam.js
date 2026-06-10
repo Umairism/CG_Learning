@@ -36,11 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath(); ctx.moveTo(i * gridSize, 0); ctx.lineTo(i * gridSize, canvas.height); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(0, i * gridSize); ctx.lineTo(canvas.width, i * gridSize); ctx.stroke();
         }
+        
+        const centerX = maxCoord / 2;
+        const centerY = maxCoord / 2;
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#58a6ff';
+        ctx.lineWidth = 2;
+        ctx.moveTo(centerX * gridSize, 0);
+        ctx.lineTo(centerX * gridSize, canvas.height);
+        ctx.moveTo(0, centerY * gridSize);
+        ctx.lineTo(canvas.width, centerY * gridSize);
+        ctx.stroke();
     }
 
     function plotPixel(x, y, color) {
         ctx.fillStyle = color;
-        ctx.fillRect(x * gridSize + 1, y * gridSize + 1, gridSize - 2, gridSize - 2);
+        const centerX = maxCoord / 2;
+        const centerY = maxCoord / 2;
+        ctx.fillRect((centerX + x) * gridSize + 1, (centerY - y) * gridSize + 1, gridSize - 2, gridSize - 2);
     }
 
     function renderState() {
@@ -62,20 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let x1 = 2, y1 = 2, x2 = 10, y2 = 6; // default easy
 
         if (diff === 'easy') {
-            x1 = Math.floor(Math.random() * 5);
-            y1 = Math.floor(Math.random() * 5);
-            x2 = x1 + Math.floor(Math.random() * 8) + 3;
-            y2 = y1 + Math.floor(Math.random() * 5) + 1; // slope < 1
+            x1 = Math.floor(Math.random() * 5) - 8;
+            y1 = Math.floor(Math.random() * 5) - 8;
+            x2 = x1 + Math.floor(Math.random() * 6) + 3;
+            y2 = y1 + Math.floor(Math.random() * 4) + 1; // slope < 1
         } else if (diff === 'medium') {
-            x1 = Math.floor(Math.random() * 5);
-            y1 = Math.floor(Math.random() * 5);
-            x2 = x1 + Math.floor(Math.random() * 5) + 1;
-            y2 = y1 + Math.floor(Math.random() * 8) + 3; // slope > 1
+            x1 = Math.floor(Math.random() * 5) - 5;
+            y1 = Math.floor(Math.random() * 5) - 5;
+            x2 = x1 + Math.floor(Math.random() * 4) + 1;
+            y2 = y1 + Math.floor(Math.random() * 6) + 3; // slope > 1
         } else if (diff === 'hard') {
-            x1 = Math.floor(Math.random() * 5) + 10;
-            y1 = Math.floor(Math.random() * 5) + 10;
-            x2 = x1 - Math.floor(Math.random() * 8) - 2;
-            y2 = y1 - Math.floor(Math.random() * 5) - 1; // negative slope
+            x1 = Math.floor(Math.random() * 5) + 3;
+            y1 = Math.floor(Math.random() * 5) + 3;
+            x2 = x1 - Math.floor(Math.random() * 6) - 2;
+            y2 = y1 - Math.floor(Math.random() * 4) - 1; // negative slope
         }
 
         currentProblem = { x1, y1, x2, y2, algo: selAlgo.value };
@@ -101,8 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('click', (e) => {
         if (!currentProblem) return;
         const rect = canvas.getBoundingClientRect();
-        const x = Math.floor((e.clientX - rect.left) / gridSize);
-        const y = Math.floor((e.clientY - rect.top) / gridSize);
+        const centerX = maxCoord / 2;
+        const centerY = maxCoord / 2;
+        const rawX = Math.floor((e.clientX - rect.left) / gridSize);
+        const rawY = Math.floor((e.clientY - rect.top) / gridSize);
+        const x = rawX - centerX;
+        const y = centerY - rawY;
 
         // Don't toggle start/end
         if ((x === currentProblem.x1 && y === currentProblem.y1) || 
@@ -239,9 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let {sol} = getSolution();
             sol.forEach(p => {
                 // If user didn't pick it, draw green outline
+                const centerX = maxCoord / 2;
+                const centerY = maxCoord / 2;
                 ctx.strokeStyle = '#3fb950';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(p.x * gridSize + 2, p.y * gridSize + 2, gridSize - 4, gridSize - 4);
+                ctx.strokeRect((centerX + p.x) * gridSize + 2, (centerY - p.y) * gridSize + 2, gridSize - 4, gridSize - 4);
             });
         } else {
             renderState(); // clear solution overlay

@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     
     // Grid settings
-    const gridSize = 20;
-    const cols = canvas.width / gridSize;
-    const rows = canvas.height / gridSize;
+    let gridSize = 20;
+    let cols = canvas.width / gridSize;
+    let rows = canvas.height / gridSize;
 
     // UI Elements
     const x1Input = document.getElementById('bres-x1');
@@ -34,35 +34,67 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.strokeStyle = '#30363d';
         ctx.lineWidth = 1;
         
-        for(let i=0; i<=cols; i++) {
+        let requiredRange = cols / 2;
+        let lineInterval = 1;
+        let tickInterval = 5;
+        
+        if (requiredRange > 30) {
+            lineInterval = 5;
+            tickInterval = 10;
+        } else if (requiredRange > 15) {
+            lineInterval = 2;
+            tickInterval = 10;
+        }
+        
+        for(let i=0; i<=cols; i+=lineInterval) {
             ctx.beginPath();
             ctx.moveTo(i*gridSize, 0);
             ctx.lineTo(i*gridSize, canvas.height);
             ctx.stroke();
         }
-        for(let j=0; j<=rows; j++) {
+        for(let j=0; j<=rows; j+=lineInterval) {
             ctx.beginPath();
             ctx.moveTo(0, j*gridSize);
             ctx.lineTo(canvas.width, j*gridSize);
             ctx.stroke();
         }
         
-        // Draw coordinate numbers (every 5)
+        const centerX = cols / 2;
+        const centerY = rows / 2;
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#d29922';
+        ctx.lineWidth = 2;
+        ctx.moveTo(centerX * gridSize, 0);
+        ctx.lineTo(centerX * gridSize, canvas.height);
+        ctx.moveTo(0, centerY * gridSize);
+        ctx.lineTo(canvas.width, centerY * gridSize);
+        ctx.stroke();
+
         ctx.fillStyle = '#8b949e';
         ctx.font = '10px monospace';
-        for(let i=0; i<=cols; i+=5) {
-            ctx.fillText(i, i*gridSize + 2, canvas.height - 2);
+        for(let i=0; i<=cols; i+=tickInterval) {
+            const logicalX = i - centerX;
+            ctx.fillText(logicalX, i*gridSize + 2, centerY * gridSize - 2);
         }
-        for(let j=0; j<=rows; j+=5) {
-            ctx.fillText(j, 2, canvas.height - j*gridSize - 2);
+        for(let j=0; j<=rows; j+=tickInterval) {
+            const logicalY = centerY - j;
+            if(logicalY !== 0) ctx.fillText(logicalY, centerX * gridSize + 2, j*gridSize - 2);
         }
     }
 
     function plotPixel(x, y, color = '#d29922') {
         ctx.fillStyle = color;
-        // Invert Y axis for drawing so origin is bottom-left
-        const drawY = rows - y - 1; 
-        ctx.fillRect(x * gridSize + 1, drawY * gridSize + 1, gridSize - 2, gridSize - 2);
+        const centerX = cols / 2;
+        const centerY = rows / 2;
+        const drawX = centerX + x;
+        const drawY = centerY - y;
+        
+        const pxX = Math.floor(drawX * gridSize) + 1;
+        const pxY = Math.floor(drawY * gridSize) + 1;
+        const pxSize = Math.max(1, Math.ceil(gridSize) - 1);
+        
+        ctx.fillRect(pxX, pxY, pxSize, pxSize);
     }
 
     function calculateBresenham() {
@@ -70,6 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let y1 = parseInt(y1Input.value);
         let x2 = parseInt(x2Input.value);
         let y2 = parseInt(y2Input.value);
+
+        // Dynamically adjust grid scale
+        const maxCoord = Math.max(Math.abs(x1), Math.abs(y1), Math.abs(x2), Math.abs(y2));
+        const requiredRange = Math.max(10, Math.ceil(maxCoord) + 1);
+        cols = rows = 2 * requiredRange;
+        gridSize = canvas.width / cols;
 
         // Simple Bresenham for 0 < slope < 1
         // We will swap points if x1 > x2 for simplicity of this demo
