@@ -1,0 +1,191 @@
+--- 10 Drawing  Coordinate System.pptx ---
+Drawing and Coordinate Systems
+Instructor: Sabina Irum
+1
+The viewport refers to the region of the screen where the rendered graphics are displayed.It's essentially the area of the window or screen where the graphics are visible to the user.Viewport settings can include parameters like position, size, and aspect ratio, determining how the rendered scene is displayed on the screen.
+Instructor: Sabina Irum
+2
+Orthographic 2D projection is a way of showing 2D graphics on a screen without making faraway objects look smaller or closer ones larger. It keeps everything the same size no matter how far away it is. It's like looking at a flat picture where everything stays the same size, regardless of how far away it is in the scene.
+Instructor: Sabina Irum
+3
+Coordinate Systems 
+World Coordinate system
+World window 
+Screen Coordinate system
+Viewport 
+Window to viewport mapping 
+4
+Instructor: Sabina Irum
+MODEL/WORLD WINDOW-TO-VIEWPORT COORDINATE TRANSFORMATION 
+A world-coordinate area select...
+
+--- 13 Modeling virtual reality modeling.pptx ---
+Modeling Virtually Real Appearance
+Modeling Virtual Reality 
+Modeling appearance of an object in virtual reality involves working on the following aspects:
+ Material characteristics
+ Lighting
+ Shading
+ Textures
+Phong Reflection Model
+The Phong reflection model is a local illumination model in which the light coming off of an object is grouped into one of the following categories:
+ Ambient reflection
+ This part of the model defines how the material reflects light from an ambient source
+ Three coefficients of the material kar; kag; kab are provided
+The values of the coefficients tell how much amounts of the red, green, and blue light components are reflected
+ 
+Diffuse reflection
+ Defines reflections of red, green, and blue components of light from the surface as a dull material
+The color given here will be reflected with dull appearance
+Amount of reflected light will depend upon the strength and distance of light source
+
+Specular reflection
+ Amount of the reflected red, green, and blue c...
+
+--- 14 Texture Mapping.pptx ---
+Texture Mapping
+
+
+Texture mapping
+Texture mapping is a graphic design process in which a two-dimensional (2-D) surface, called a texture map, is "wrapped around" a three-dimensional (3-D)object. 
+Thus, the 3-D object acquires a surface texture similar to that of the 2-D surface. 
+Texture mapping is the electronic equivalent of applying wallpaper, or paint to a real object.
+Steps in Texture Mapping
+Name the texture
+Bind the texture to its name
+Specify the parameters to use
+Specify an application mode (either replace or modify)
+Create the texture object
+Enable texture mapping
+
+Steps in the Rendering Process
+Select a texture
+Specify a mapping from the texture to pixels
+
+Naming a Texture
+The Function:
+void glGenTextures(GLsizei n, GLuint* names)
+Purpose:
+Returns n unused "names" (actually integers)
+The "names" need not be contiguous
+Naming a Texture 
+static GLuint textureName; 
+// Get a name for the texture 
+glGenTextures(1, &textureName); 
+Binding a Texture to a Name
+The Function:
+void gl...
+
+--- 15 Applications and modern Trends.pptx ---
+Computer Graphics in Daily Life & Modern Trends
+Overview of Real-World Applications and Emerging Technologies
+Applications of Computer Graphics in Daily Life
+• Gaming and Entertainment
+  Used in 2D/3D games, animated movies, and visual effects.
+• Education and Training
+  Interactive simulations and virtual labs improve learning.
+• Medical Imaging
+  MRI, CT scans, and 3D visualization help in diagnosis.
+• Engineering and Architecture
+  CAD software is used for building and product design.
+Modern Trends in Computer Graphics
+• Artificial Intelligence in Graphics
+  AI is used for image generation, animation, and automation.
+• Virtual Reality (VR) and Augmented Reality (AR)
+  Provides immersive experiences in gaming and education.
+• Real-Time Ray Tracing
+  Creates realistic lighting and reflections in graphics.
+• Metaverse and Digital Twins
+  Virtual worlds and digital replicas are becoming popular.
+Conclusion
+Computer graphics play a major role in modern technology.
+They improve visualizat...
+
+--- 8 DDA-line-drawing-algorithm.pptx ---
+
+
+
+
+
+
+Digital Differential Analyzer (DDA) 
+LINE DRAWING ALGORITHM
+WITH SOLVED EXAMPLES
+The line (vector) generation algorithms which determine the pixels that should be turned ON are called as digital differential analyzer (DDA).  
+It is one of the technique for obtaining a rasterized straight line. 
+This algorithm can be used to draw the line in all the quadrants.
+
+
+
+DDA LINE DRAWING ALGORITHM
+DDA ALGORITHM
+Assumption: 
+(x1, y1) and (x2, y2) are the two end points of a line and are not equal.
+Floor integer function is used to convert the real values into integer value.
+	e.g.: if value is +8.5 then it is converted to 8 and 
+	if value is -8.5 then it is converted to 9.
+3. Sign function is used which returns +1, 0, -1 for the arguments >0, =0, <0.
+	e.g.: sign(5) = +1 
+		   sign(0) = 0
+              sign(-10) = -1
+		   sign (1) = 1
+
+CONTD….
+Step 1: Approximate the line length
+if abs(x2-x1)>= abs(y2-y1) then
+	length = abs(x2-x1)
+else 
+	length = abs(y2-y1)
+end if 
+ 
+Step 2: Decide increment...
+
+--- 9 Bresenham_Algorithm.pptx ---
+Bresenham’s Line Drawing Algorithm
+HCI And Computer Graphics
+Introduction
+Bresenham’s algorithm is an incremental line drawing algorithm
+Uses only integer calculations
+More efficient than DDA algorithm
+Selects the nearest pixel to the actual line
+
+Basic Concept
+Move along x-axis in unit steps 
+At each step, choose between: 
+(x+1, y) 
+(x+1, y+1) 
+Choose the pixel closer to the actual line 
+Decision Parameter
+Decision Parameter
+Decision parameter: Pk 
+Helps decide which pixel to choose 
+
+Decision Rules
+HINT: Pk < 0 → just increment x  Pk ≥ 0 → increment both x and y
+If Pk < 0
+→ Choose (xk+1, yk)
+→ Pk+1 = Pk + 2dy
+If Pk ≥ 0
+→ Choose (xk+1, yk+1)
+→ Pk+1 = Pk + 2dy − 2dx
+
+Algorithm Steps
+
+Advantages
+
+Uses integer arithmetic only 
+Faster than floating-point algorithms 
+Efficient for raster displays 
+Example 1
+Line from (2, 5) to (10, 8)
+dy = 8 – 5 = 3
+dx = 10 – 2 = 8 
+2dy = 6
+2dx = 16
+2dy - 2dx = -10
+Po = 2dy – dx = -2
+
+dy = 3		dx = 8  	   2dy = 6		 2dx = 16		 Po = -2
+If Pk < 0
+→ Pk+1 = Pk ...
+

@@ -123,6 +123,10 @@
                             <p>The mathematical coordinate space where the scene is defined.</p>
                         </div>
                         <div class="card">
+                            <h3>Orthographic 2D Projection</h3>
+                            <p>Shows 2D graphics without making faraway objects look smaller. It keeps everything the same size regardless of depth.</p>
+                        </div>
+                        <div class="card">
                             <h3>Window</h3>
                             <p>A selected rectangular region of the world space to be displayed.</p>
                         </div>
@@ -169,7 +173,12 @@
                     <div class="theory-grid">
                         <div class="card">
                             <h3>How it Works</h3>
-                            <p>DDA uses floating-point arithmetic to calculate the next pixel on a line by incrementally adding the slope to either x or y.</p>
+                            <p>DDA uses floating-point arithmetic to calculate the next pixel on a line by incrementally adding the slope to either x or y. It relies on two key mathematical functions:</p>
+                            <ul>
+                                <li><strong>Floor Function:</strong> Converts real values into integers (e.g., +8.5 to 8, -8.5 to -9).</li>
+                                <li><strong>Sign Function:</strong> Returns +1, 0, or -1 depending on whether the argument is >0, =0, or <0.</li>
+                            </ul>
+                            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
                             <ul>
                                 <li>Compute <code>dx = x2 - x1</code> and <code>dy = y2 - y1</code></li>
                                 <li><code>steps = max(|dx|, |dy|)</code></li>
@@ -255,11 +264,18 @@
                         <div class="card">
                             <h3>Decision Parameter</h3>
                             <p>Bresenham's algorithm uses a decision parameter <code>P</code> to choose between the East (E) or North-East (NE) pixel.</p>
+                            <div style="background: rgba(88,166,255,0.1); padding: 10px; border-left: 4px solid var(--primary-color); margin-bottom: 10px; font-weight: bold;">
+                                HINT: Pk &lt; 0 &rarr; just increment x <br> Pk &ge; 0 &rarr; increment both x and y
+                            </div>
                             <ul>
                                 <li><strong>Initial P₀:</strong> <code>2dy - dx</code></li>
                                 <li><strong>If P < 0:</strong> Choose E pixel. <code>P_{k+1} = P_k + 2dy</code></li>
                                 <li><strong>If P ≥ 0:</strong> Choose NE pixel. <code>P_{k+1} = P_k + 2dy - 2dx</code></li>
                             </ul>
+                            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+                            <h4>Solved Example: (2, 5) to (10, 8)</h4>
+                            <p style="font-family: monospace; font-size: 0.9rem;">dy = 3, dx = 8, 2dy = 6, 2dx = 16<br>Initial P₀ = -2</p>
+                            <p style="font-family: monospace; font-size: 0.9rem;">Since P₀ < 0 &rarr; P₁ = -2 + 6 = 4. Pixel: (3, 5)</p>
                         </div>
                         <div class="card">
                             <h3>DDA vs Bresenham</h3>
@@ -360,6 +376,14 @@
                 </header>
                 <div class="page-content">
                     <div class="theory-grid">
+                        <div class="card" style="grid-column: span 2; margin-bottom: -10px;">
+                            <h3>Common Clipping Strategies</h3>
+                            <ul style="margin-top: 5px;">
+                                <li><strong>Check every point:</strong> Correct but slow.</li>
+                                <li><strong>Clip coordinates directly:</strong> Not accurate.</li>
+                                <li><strong>Compute intersections with boundaries:</strong> The correct method (used in Cohen-Sutherland).</li>
+                            </ul>
+                        </div>
                         <div class="card">
                             <h3>Outcodes</h3>
                             <p>Every point is assigned a 4-bit binary code (TBRL) indicating its position relative to the clipping window (Top, Bottom, Right, Left).</p>
@@ -486,9 +510,9 @@
                             <h3>Phong Reflection Model</h3>
                             <p>Combines three components to simulate light interacting with a surface:</p>
                             <ul>
-                                <li><span style="color:var(--danger-color)">Ambient:</span> Constant background light scattered everywhere.</li>
-                                <li><span style="color:var(--primary-color)">Diffuse:</span> Light scattered equally in all directions (matte).</li>
-                                <li><span style="color:var(--success-color)">Specular:</span> Highlight from reflected light (shiny).</li>
+                                <li><span style="color:var(--danger-color)">Ambient:</span> Constant background light scattered everywhere. Defined by coefficients <strong>kar, kag, kab</strong> (amounts of red, green, blue reflected).</li>
+                                <li><span style="color:var(--primary-color)">Diffuse:</span> Light scattered equally in all directions, representing a <strong>dull material</strong> appearance.</li>
+                                <li><span style="color:var(--success-color)">Specular:</span> Highlight from reflected light, representing a <strong>shiny</strong> appearance.</li>
                             </ul>
                             <div style="background:#000; padding:10px; margin-top:10px; border-radius:4px; font-family:monospace; text-align:center;">
                                 Total = Ambient + Diffuse + Specular
@@ -601,7 +625,7 @@
                         <div class="card">
                             <h3>OpenGL Workflow</h3>
                             <ul style="font-family:monospace; font-size: 0.9rem;">
-                                <li><code>glGenTextures()</code> - Generate texture ID</li>
+                                <li><code>void glGenTextures(GLsizei n, GLuint* names)</code><br><span style="font-family:var(--font-family); font-size:0.85rem;">Returns <i>n</i> unused texture names (integers).</span></li>
                                 <li><code>glBindTexture()</code> - Make texture active</li>
                                 <li><code>glTexImage2D()</code> - Load image data</li>
                                 <li><code>glEnable(GL_TEXTURE_2D)</code> - Turn on mapping</li>
