@@ -125,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             k: 0,
             x: x,
             y: y,
-            rx: Math.round(x),
-            ry: Math.round(y)
+            rx: Math.floor(x),
+            ry: Math.floor(y)
         });
 
         for(let k = 1; k <= steps; k++) {
@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 k: k,
                 x: x,
                 y: y,
-                rx: Math.round(x),
-                ry: Math.round(y)
+                rx: Math.floor(x),
+                ry: Math.floor(y)
             });
         }
 

@@ -17,7 +17,323 @@ Window to viewport mapping
 4
 Instructor: Sabina Irum
 MODEL/WORLD WINDOW-TO-VIEWPORT COORDINATE TRANSFORMATION 
-A world-coordinate area select...
+A world-coordinate area selected for display is called a window. 
+An area on a display device to which a window is mapped is called a viewport. 
+The window defines what is to be viewed; the viewport defines where it is to be displayed.
+Instructor: Sabina Irum
+5
+Screen Coordinate System 
+6
+  2D Regular Cartesian Grid
+  Origin (0,0) at lower left 
+   corner (OpenGL convention)
+  Horizontal axis – x 
+   Vertical axis – y 
+  Pixels are defined at the grid intersections
+  This coordinate system is defined relative to the display window origin
+   (OpenGL: the lower left corner of the window) 
+   
+(0,0)
+y
+x
+
+(2,2)
+Instructor: Sabina Irum
+World Coordinate System
+7
+
+
+20 feet
+
+10 feet
+Instructor: Sabina Irum
+Define a world window
+8
+
+Instructor: Sabina Irum
+World Window
+World window – a rectangular region in the world that is to be displayed 
+9
+
+
+Define by 
+
+W_L, W_R, W_B, W_T
+Instructor: Sabina Irum
+Viewport 
+The rectangular region in the screen for displaying the graphical objects defined in the world window
+Defined in the screen coordinate system 
+10
+glViewport(int  left, int  bottom, int  (right-left), int (top-bottom));
+ 
+call this function before drawing (calling glBegin() and glEnd() )
+Instructor: Sabina Irum
+11
+Instructor: Sabina Irum
+To draw in world coordinate system 
+Three tasks need to be done
+Define a rectangular world window
+     (call an OpenGL function)
+Define a viewport (call an OpenGL function)
+Perform window to viewport mapping
+12
+Instructor: Sabina Irum
+Window to viewport mapping
+The objects in the world window will then be drawn onto the viewport 
+
+13
+World window
+viewport
+Instructor: Sabina Irum
+Window to viewport mapping
+How to calculate (sx, sy) from (x,y)? 
+14
+Instructor: Sabina Irum
+Window to viewport mapping
+Before calling gluOrtho2D(), you need to have the following two lines of code –
+glMatrixMode(GL_PROJECTION); 
+glLoadIdentity(); 
+Things that are given:
+The world window (W_L, W_R, W_B, W_T) (l,r,b,t)
+The viewport (V_L, V_R, V_B, V_T) (l,r,b,t)
+A point (x,y) in the world coordinate system 
+Calculate the corresponding point (sx, sy) in the screen coordinate system 
+15
+Instructor: Sabina Irum
+Window to viewport mapping
+Basic principle: the mapping should be proportional 
+16
+(x – W_L) /  (W_R – W_L)        =      (sx – V_L)  / (V_R – V_L) 
+
+(y -  W_B) /   (W_T – W_B)     =     (sy – V_B) / (V_T – V_B)       
+
+
+
+
+Instructor: Sabina Irum
+Window to viewport mapping
+17
+(x – W_L) /  (W_R – W_L)        =      (sx – V_L)  / (V_R – V_L) 
+
+(y -  W_B) /   (W_T – W_B)     =     (sy – V_B) / (V_T – V_B)       
+Instructor: Sabina Irum
+Example
+What is (Sx,Sy) for point (3.4,1.2) in world coordinates if:
+
+18
+Hence, point (3.4,1.2) in world = point (332,176) on screen
+Instructor: Sabina Irum
+Example
+What is (Sx,Sy) for point (2,3) in world coordinates if:
+
+19
+Hence, point (2,3) in world = point (?,?) on screen
+Instructor: Sabina Irum
+Example
+What is (Sx,Sy) for point (4,5) in world coordinates if:
+
+20
+Hence, point (4,5) in world = point (?,?) on screen
+Instructor: Sabina Irum
+World window set up
+Find the world coordinates extent that will cover the entire scene 
+21
+Instructor: Sabina Irum
+Zoom into the picture
+22
+
+
+
+
+
+
+
+
+
+Shrink your world window – call gluOrtho2D() with a new range
+
+
+
+
+Viewport 
+Instructor: Sabina Irum
+Non-distorted viewport setup
+Distortion happens when …
+World window and display window have different aspect ratios
+Aspect ratio is R = W / H
+CASE 1: R >   W / H 
+CASE 2: R <   W / H 
+
+
+23
+Instructor: Sabina Irum
+Compare aspect ratios
+24
+
+
+World window
+
+Aspect Ratio = R  
+Display window
+
+Aspect Ratio = W / H   
+
+W
+
+H
+R >   W / H 
+Instructor: Sabina Irum
+CASE 1:    R > W / H 
+25
+
+World window
+
+Aspect Ratio = R  
+Display window
+
+Aspect Ratio = W / H   
+
+
+R >   W / H 
+R
+glViewport(0, 0, W, W/R)
+
+W
+H
+
+Instructor: Sabina Irum
+Case 2:    R <   W / H 
+26
+
+
+World window
+
+Aspect Ratio = R  
+Display window
+
+Aspect Ratio = W / H   
+
+W
+
+H
+R <   W / H 
+Instructor: Sabina Irum
+Match Aspect Ratios
+27
+
+
+World window
+
+Aspect Ratio = R  
+Display window
+
+Aspect Ratio = W / H   
+
+W
+
+H
+R <   W / H 
+
+Instructor: Sabina Irum
+Match aspect ratios
+28
+
+
+World window
+
+Aspect Ratio = R  
+Display window
+
+Aspect Ratio = W / H   
+
+W
+
+H
+
+R <   W / H 
+
+glViewport(0, 0, H*R, H)
+Instructor: Sabina Irum
+CASE 1: R >   W / HglViewport(0, 0, W, W/R) CASE 2: R <   W / HglViewport(0, 0, H*R, H) 
+Instructor: Sabina Irum
+29
+Put it all together 
+30
+DrawQuad() 
+{
+   glViewport(0,0,300,200);
+   glMatrixMode(GL_PROJECTION); 
+   glLoadIdentity(); 
+   gluOrtho2D(-1,1,-1,1); 
+   glBegin(GL_QUADS); 
+   glColor3f(1,1,0); 
+   glVertex2f(-0.5,-0.5); 
+   glVertex2f(+0.5,-0.5); 
+   glVertex2f(+0.5,+0.5); 
+   glVertex2f(-0.5,+0.5);    
+   glEnd(); 
+} 
+
+(0,0)
+(300,200)
+
+viewport
+How  big is the quad?
+Instructor: Sabina Irum
+Lets change the ORTHO 2d
+Instructor: Sabina Irum
+31
+Changing the orthographic projection from –1 to +1 to –2 to +2 makes the square appear smaller
+the visible coordinate system becomes larger, fitting more objects into the same screen space.
+Before
+After
+Well, this works too …
+32
+OpenGL Default: 
+
+glViewport: as large as
+   you display window 
+
+gluOrtho2D: 
+   gluOrtho2D(-1,1,-1,1);
+main() 
+{
+…
+   glBegin(GL_QUADS); 
+   glColor3f(1,1,0); 
+   glVertex2f(-0.5,-0.5); 
+   glVertex2f(+0.5,0); 
+   glVertex2f(+0.5,+0.5); 
+   glVertex2f(-0.5,+0.5);    
+   glEnd(); 
+} 
+
+Instructor: Sabina Irum
+Compare aspect ratios
+33
+
+
+World window
+
+  
+Display window
+
+  
+
+W
+
+H
+R >   W / H 
+Instructor: Sabina Irum
+Instructor: Sabina Irum
+34
+Task3:
+What is (Sx,Sy) for point (3.4,1.2) in world coordinates if:
+W=(0,4,0,2)
+V=(60,380,80,240)
+
+
+
 
 --- 13 Modeling virtual reality modeling.pptx ---
 Modeling Virtually Real Appearance
@@ -40,7 +356,207 @@ The color given here will be reflected with dull appearance
 Amount of reflected light will depend upon the strength and distance of light source
 
 Specular reflection
- Amount of the reflected red, green, and blue c...
+ Amount of the reflected red, green, and blue components as if the surface was shiny
+ Intensity of reflected light depends upon the direction of light and the direction of line of sight
+ A shininess coefficient has to defined as a property of the material
+ Water and glass are example of such surfaces
+
+Components of Phong reflection model
+Appearance of Materials
+ Specular surfaces
+ Smooth and shiny
+ Reflect most of the light incident on them
+ Mirrors are perfectly specular surfaces
+ Diffuse surfaces
+ Rough and dull
+ Scatter light in all directions
+ A perfectly diffuse surface scatters lights equally in all directions and appear the same from all directions
+
+Appearance of Materials
+
+ Translucent surfaces
+ Allow some light to pass through
+ Other objects can be seen through them
+ Some light may also get reflected
+ Water and glass are example of such surfaces
+Ambient color: Color of a material when it is in shadow
+
+(a) Specular surface
+(b) Diffuse surface
+(c) Traslucent surface
+(d) Ambient, diffuse, and specular
+colors
+Material Modeling with OpenGL
+The reflection parameters of a material can be provided in form of three arrays of four values each
+ The arrays contain values for ambient, reflection parameters of a material can be provided in form of three arrays of four values each e.g.
+GLfloat ambient[] = {r, g, b, a};
+GLfloat diffuse[] = {r, g, b, a};
+GLfloat specular[] ={r, g, b, a};
+
+Material Fv in OpenGL calculates the amount of light reflected from a surface, considering the viewing angle and surface properties. 
+This simulates how materials reflect light at different angles, enhancing scene realism.
+These arrays can be applied to a model using a material function, e.g.
+glMaterialfv(face, property, value)
+ The face could be GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+ The property will be GL_AMBIENT, GL_DIFFUSE, or GL_SPECULAR when the arrays ambient, diffuse, or specular, respectively, are provided
+ The material function may be called repeatedly to apply more properties
+ GL_SHININESS can be given in property with a positive float value to increase specular effect
+
+glMaterialfv(face, property, value)
+face GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+property GL_AMBIENT, GL_DIFFUSE, or GL_SPECULAR
+Light Sources
+Different light sources make the same object appear differently
+ Ambient Light
+ Light sources causing uniform illuminations
+ Same amount of light reaches all points of the scene
+ Light bulbs with rough covers on them are examples of ambient lights
+
+Point (Diffuse) light sources
+ Light source that emits light equally in all directions
+ Intensity of light decreases with distance from
+ Size of the source is usually small
+ Spotlight
+ Light is distributed in shape of cone
+ Most of the light is concentrated in the center of the cone
+
+ Distant light
+ The light source is considered at a large distance from the scene
+ Rays of light become parallel to each other
+ Colored light
+The light can have a color
+ The color is represented in the red, green, and blue components of the light definition
+(a) Ambient lights
+(b) Point light
+(c) Spot lights
+Shading
+Light coming from different sources can give rise to a different shades of color on a homogenously colored same surface.
+ The change of appearing color depends upon the type of light source and the direction from which the light falls on an object
+ Flat shading
+ A three dimensional surface is divided into polygons
+ Each polygon is shaded with a color depending upon its status with respect to the light source
+
+Smooth shading
+ Amount of shade is computed at vertices of surface meshes or some points inside these meshes (polygons)
+ Colors for the points in between the computed points is determined using interpolation
+ Using OpenGl the smooth or flat shading can be enabled using
+glShadeModel(mode)
+where mode can be GL_FLAT or GL_SMOOTH
+
+(a) Flat shaded
+(b) Smooth shaded
+Implementation
+#include <GL/glut.h>
+void init() {
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    // Set up a white light source
+    GLfloat light_position[] = {1.0f, 1.0f, 1.0f, 0.0f};
+    GLfloat light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+
+    
+
+
+
+// Set material properties
+    GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f};
+    GLfloat diffuseColor[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat specularColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat shininess = 64.0f;
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambientColor);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseColor);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specularColor);
+    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+}
+
+
+void display() 
+{
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glutSolidTeapot(1.0); // Example object (teapot)
+
+    glutSwapBuffers();
+}
+
+
+
+int main(int argc, char** argv) 
+{    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+    glutCreateWindow("Material Modeling Example");
+    glutDisplayFunc(display);
+    init();
+    glutMainLoop();
+    return 0;
+}
+
+
+Select which light property will be applied on a View in where we have a street Light view and a light is covered with a rough surface. 
+Also define the c++ function that will be used to perform this task.
+
+The next we have another example.
+#include <GL/glut.h>
+
+void init() {
+    // Enable lighting, light source, and depth testing
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+
+    // Define light properties
+    GLfloat light_position[] = { 0.0f, 0.0f, 10.0f, 1.0f }; // Position of the light (positional)
+    GLfloat light_ambient[]  = { 0.2f, 0.2f, 0.2f, 1.0f }; // Ambient light
+    GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; // Diffuse light (bright white)
+    GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // Specular light (shiny reflection)
+
+    // Set the light properties
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+Applying Lightning
+Applying Material properties
+
+    // Define material properties
+    GLfloat mat_ambient[]   = { 0.2f, 0.2f, 0.2f, 1.0f }; // Ambient material color
+    GLfloat mat_diffuse[]   = { 0.8f, 0.5f, 0.3f, 1.0f }; // Diffuse material color
+    GLfloat mat_specular[]  = { 1.0f, 1.0f, 1.0f, 1.0f }; // Specular material color
+    GLfloat mat_shininess[] = { 50.0f }; // Shininess of the material
+
+    // Apply material properties
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+    // Set the background color to dark gray
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+    // Set up the perspective projection
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, 1.0, 1.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+
+
+int main(int argc, char **argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutCreateWindow("Light and Material Setup");
+
+    init();  // Initialize lighting and material properties
+
+    glutMainLoop();
+    return 0;
+}
 
 --- 14 Texture Mapping.pptx ---
 Texture Mapping
@@ -74,7 +590,124 @@ static GLuint textureName;
 glGenTextures(1, &textureName); 
 Binding a Texture to a Name
 The Function:
-void gl...
+void glBindTexture(GLenum target, GLuint name)
+The Target:
+Either GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D or GL_TEXTURE_CUBE_MAP
+
+Binding a Texture to a Name 
+// Bind the texture object to its name glBindTexture(GL_TEXTURE_2D, textureName); 
+Enable Texture Mapping
+You need to enable texturing before drawing your scene. 
+Texturing is enabled or disabled using
+ glEnable() or glDisable() 
+with the symbolic constant GL_TEXTURE_1D or GL_TEXTURE_2D for one− or two−dimensional texturing, respectively. 
+(If both are enabled, GL_TEXTURE_2D is the one that is used.) 
+Example
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+#include <stdio.h>
+/* Create checkerboard texture */
+#define checkImageWidth 64
+
+#define checkImageHeight 64
+static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
+static GLuint texName;
+void makeCheckImage(void)
+{  int i, j, c;
+ for (i = 0; i < checkImageHeight; i++) {
+ for (j = 0; j < checkImageWidth; j++) {
+ c = ((((i&0x8)==0)^((j&0x8))==0))*255;
+ checkImage[i][j][0] = (GLubyte) c;
+ checkImage[i][j][1] = (GLubyte) c;
+ checkImage[i][j][2] = (GLubyte) c;
+ checkImage[i][j][3] = (GLubyte) 255;
+ } }}
+
+void init(void)
+{  glClearColor (0.0, 0.0, 0.0, 0.0);
+ glShadeModel(GL_FLAT);
+ glEnable(GL_DEPTH_TEST);
+ makeCheckImage();
+ glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+ glGenTextures(1, &texName);
+ glBindTexture(GL_TEXTURE_2D, texName);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+ glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth,
+ checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,  checkImage);
+}
+
+void display(void)
+{  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ glEnable(GL_TEXTURE_2D);
+glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+ glBindTexture(GL_TEXTURE_2D, texName);
+ glBegin(GL_QUADS);
+ glTexCoord2f(0.0, 0.0); glVertex3f(−2.0, −1.0, 0.0);
+ glTexCoord2f(0.0, 1.0); glVertex3f(−2.0, 1.0, 0.0);
+ glTexCoord2f(1.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
+ glTexCoord2f(1.0, 0.0); glVertex3f(0.0, −1.0, 0.0);
+ glTexCoord2f(0.0, 0.0); glVertex3f(1.0, −1.0, 0.0);
+ glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 0.0);
+ glTexCoord2f(1.0, 1.0); glVertex3f(2.41421, 1.0, −1.41421);
+ glTexCoord2f(1.0, 0.0); glVertex3f(2.41421, −1.0, −1.41421);
+ glEnd();
+ glFlush();
+ glDisable(GL_TEXTURE_2D);
+}
+
+
+void reshape(int w, int h)
+{
+ glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+ glMatrixMode(GL_PROJECTION);
+ glLoadIdentity();
+ gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 30.0);
+ glMatrixMode(GL_MODELVIEW);
+ glLoadIdentity();
+ glTranslatef(0.0, 0.0, −3.6);
+}
+
+void keyboard (unsigned char key, int x, int y)
+{ switch (key) {
+ case 27:
+ exit(0);
+ break;
+ default:
+ break;
+ }}
+int main(int argc, char** argv)
+{  glutInit(&argc, argv);
+ glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+ glutInitWindowSize(250, 250);
+ glutInitWindowPosition(100, 100);
+ glutCreateWindow(argv[0]);
+init();
+ glutDisplayFunc(display);
+ glutReshapeFunc(reshape);
+ glutKeyboardFunc(keyboard);
+ glutMainLoop();
+ return 0;
+}
+
+void display() {
+  // Clear the screen
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  // Select the texture object
+  glBindTexture(GL_TEXTURE_2D, textureName);
+  // Create the teapot
+  glutSolidTeapot(1.0);
+  // Force the rendering (off-screen)
+  glFlush();
+  // Handle the double buffering
+  glutSwapBuffers();
+}
+
+Another Example
 
 --- 15 Applications and modern Trends.pptx ---
 Computer Graphics in Daily Life & Modern Trends
@@ -99,7 +732,56 @@ Modern Trends in Computer Graphics
   Virtual worlds and digital replicas are becoming popular.
 Conclusion
 Computer graphics play a major role in modern technology.
-They improve visualizat...
+They improve visualization, communication, and user interaction.
+Emerging technologies such as AI, VR, and AR are shaping the future of graphics.
+
+Case Study: Smart Traffic Management System
+A software company is developing a Smart Traffic Management System for a city. The system will display 3D roads, moving vehicles, traffic signals, and real-time traffic updates. It will also simulate day/night environments and highlight accident areas.
+Students have to analyze how Computer Graphics concepts will be used in this system.
+Questions
+How will transformations help in moving vehicles? 
+Which projection technique will be suitable for city visualization? 
+How can animation be used for traffic signals and cars? 
+Why are clipping and viewport mapping important? 
+How will lighting and shading improve realism? 
+How can AI, VR, or AR enhance the system? 
+Learning Outcome
+Students will understand how Computer Graphics concepts are applied in real-world systems such as smart cities and traffic visualization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 --- 8 DDA-line-drawing-algorithm.pptx ---
 
@@ -138,7 +820,180 @@ else
 	length = abs(y2-y1)
 end if 
  
-Step 2: Decide increment...
+Step 2: Decide increment
+Δx = (x2-x1) / length
+Δy = (y2-y1) / length
+ 
+
+X1=0   x2=5
+Y1=0   y2=5
+Step1=(5-0)>=(5-0)
+Length=5
+Step 2:
+Delx(5/5)=1
+Dely=1 
+
+
+
+CONTD….
+Step 3: Decide flow (round the values rather than truncate to handle central pixel addressing correctly)
+x = x1 + 0.5 * sign(Δx)
+y = y1 + 0.5 * sign(Δy) 
+
+Step 4: Begin main loop
+    i = 1 
+    while (i <= length)
+setpixel (intger x, integer y) 
+x = x + Δx 
+y = y + Δy 
+i = i + 1
+  end while
+finish
+
+
+X1=0   x2=5
+Y1=0   y2=5
+Step1=(5-0)>=(5-0)
+Length=5
+Step 2:
+Delx(5/5)=1
+Dely=1 
+Step 3:
+X=0+0.5(sign(delx)
+   =0+0.5*(1)
+   =0.5
+y=0+0.5(sign(dely)
+   =0+0.5*(1)
+   =0.5
+X=0.5 y=0.5
+i=0
+While(1-5)
+Setpixel(5.5,5.5)
+
+ASSUMPTION 3
+Examples
+Q. 1 Rasterize the line from (0, 0) to (5,5) using DDA algorithm.
+Solution: 
+
+
+
+Solution of Q.1 CONTD….
+X1=0   x2=5
+Y1=0   y2=5
+
+Length=5
+Step 2:
+Delx(5/5)=1
+Dely=1 
+Step 3:
+X=0.5 y=0.5
+i=0
+
+Solution of Q.1 CONTD….
+     Result :-
+The points obtain to rasterize a line from (0, 0) to (5, 5) are : 
+(0, 0)
+(1, 1)
+(2, 2)
+(3, 3) 
+(4, 4)
+ Q2.  Rasterize the line from (1, 0) to (5,4) using DDA algorithm.
+
+Note
+In Question 1, the end points to draw the line  are given directly so, the steps of the algorithm are followed to implement it. 
+But if the end points are not given and instead the equation is given then first we have to find the end points of a line from that equation and then follow the steps of algorithm.
+The procedure is demonstrated in Q.2 by solving the question asked in university paper.
+Q. 2 Rasterize the line for the equation 
+x/2 + y/10 = 1 using DDA line algorithm. 
+Solution: Given is x/2 + y/10 = 1 --------eq. (1)
+			Put x = 0 in eq. 1 ,   then y = 10
+	the 1st end point (x1,y1) is (0,10)
+			Put y = 0 in eq. 1 ,   then x = 2
+	 the 2nd end point (x2,y2) is (2,0)
+Here, 
+x1=0  ,   y1=10   ,     x2=2    ,  y2=0
+
+
+
+
+Solution of Q.2 CONTD….
+Step 1: abs(x2-x1) = abs(2-0) = 2
+             abs(y2-y1) = abs(0-10) = 10
+Here, abs (y2-y1)> abs(x2-x1) 
+			length =10
+Step 2: Δx = (x2-x1) / length = (2-0)/10 = 0.2
+            Δy = (y2-y1) / length = (0-10)/10 = -1
+
+Solution of Q.2 CONTD….
+Step 3:  x = x1 + 0.5 * sign(Δx)
+              x  = 0 + 0.5 * sign (0.2)
+	     x  = 0 + 0.5 * 1
+	  x = 0.5
+             y = y1 + 0.5 * sign(Δy) 
+	    y  = 10 + 0.5 * sign (-1)
+	    y  = 10 + 0.5 * -1
+	  x = 9.5
+
+Solution of Q.2 CONTD….
+Step 4:
+Solution of Q.2 CONTD….
+     Result :-
+The points obtain to rasterize a line for the equation 
+x/2 + y/10 = 1 are : 
+(0,9)
+(0,8)
+(0,7)
+(1,6)
+(1,5)
+(1,4)
+(1,3)
+(1,2)
+(2,1)
+(2,0)
+
+0
+1
+4
+5
+6
+2
+3
+3
+1
+2
+4
+5
+6
+
+
+7
+8
+9
+10
+
+
+
+
+
+
+
+
+Another Task 
+Apply DDA algorithm on the following equation:
+5x/7 + 18y/7 = 1
+X=0 y=? (x1,y1)
+Y=0,x=? (x2,y2)
+Advantages and Disadvantages of DDA
+Advantages : 
+Simplest line drawing algorithm
+No special skills required for its implementation
+DDA draws the line faster than drawing the line by directly using the line equation. 
+Disadvantages : 
+It dependents on orientation which makes the end point accuracy poor.
+It requires floating point addition to determine each successive point which is time consuming.
+Error due to limited precision in floating point representation may cause calculated points to shift away from their actual position when the line is relatively long.
+
+THANK YOU
 
 --- 9 Bresenham_Algorithm.pptx ---
 Bresenham’s Line Drawing Algorithm
@@ -187,5 +1042,33 @@ Po = 2dy – dx = -2
 
 dy = 3		dx = 8  	   2dy = 6		 2dx = 16		 Po = -2
 If Pk < 0
-→ Pk+1 = Pk ...
+→ Pk+1 = Pk + 2dy
+If Pk ≥ 0
+→ Pk+1 = Pk + 2dy − 2dx
+HINT: Pk < 0 → just increment x  Pk ≥ 0 → increment both x and y
+
+
+Example 2
+Line from (20,10) to (30,18)
+Calculated values:
+dy = 18 – 10 =8
+dx = 30 – 20 = 10
+2dy = 2 x 8 = 16
+2dx = 2 x 10 = 20
+2dy – 2dx = 16 – 20 = -4
+2dy – dx = P0 = 16 – 10 = 6
+
+Iteration Concept
+P₀ = 6 → positive → (21,11) 
+P₁ = 2 → positive → (22,12) 
+P₂ = -2 → negative → (23,12) 
+Continue until endpoint 
+Iteration Concept
+P₀ = 6 → positive → (21,11) 
+P₁ = 2 → positive → (22,12) 
+P₂ = -2 → negative → (23,12) 
+Continue until endpoint 
+Assignment
+Draw a line from:(2, 2) → (5, 10)
+
 

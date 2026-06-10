@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for(let i=0; i<=steps; i++) {
             // Plot DDA
-            plot(ctxDDA, Math.round(curXd), Math.round(curYd), '#f85149');
+            plot(ctxDDA, Math.floor(curXd), Math.floor(curYd), '#f85149');
             curXd += xInc;
             curYd += yInc;
 

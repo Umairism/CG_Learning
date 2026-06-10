@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let xInc = dx / steps; let yInc = dy / steps;
         let x = x1; let y = y1;
         for(let i=0; i<=steps; i++){
-            pixels.push({x: Math.round(x), y: Math.round(y)});
+            pixels.push({x: Math.floor(x), y: Math.floor(y)});
             x+=xInc; y+=yInc;
         }
         return pixels;

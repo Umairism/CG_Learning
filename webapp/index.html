@@ -140,6 +140,28 @@
                         </div>
                     </div>
 
+                    <div class="theory-grid" style="margin-top: 1.5rem;">
+                        <div class="card" style="grid-column: 1 / -1;">
+                            <h3>Window-to-Viewport Mapping</h3>
+                            <p>To convert a point <code>(x, y)</code> in the world window to a point <code>(sx, sy)</code> in the screen viewport, we use proportional mapping:</p>
+                            <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; font-family: monospace; text-align: center; margin-top: 1rem;">
+                                (x - W_L) / (W_R - W_L) = (sx - V_L) / (V_R - V_L)<br><br>
+                                (y - W_B) / (W_T - W_B) = (sy - V_B) / (V_T - V_B)
+                            </div>
+                            <p style="margin-top: 1rem; font-size: 0.9rem; color: #8b949e;">Where W = Window, V = Viewport, L=Left, R=Right, T=Top, B=Bottom.</p>
+                        </div>
+                        
+                        <div class="card" style="grid-column: 1 / -1;">
+                            <h3>OpenGL Implementation</h3>
+                            <p>In OpenGL, the coordinate system origin <code>(0,0)</code> is natively at the lower-left corner. Setting up the mapping requires three tasks:</p>
+                            <ol style="margin-top: 1rem; margin-left: 1.5rem; color: #c9d1d9; line-height: 1.6;">
+                                <li><strong>Define World Window:</strong> <code>gluOrtho2D(left, right, bottom, top);</code> (preceded by <code>glMatrixMode(GL_PROJECTION); glLoadIdentity();</code>)</li>
+                                <li><strong>Define Viewport:</strong> <code>glViewport(left, bottom, width, height);</code></li>
+                                <li><strong>Draw:</strong> Execute <code>glBegin()</code> and <code>glEnd()</code> calls which are then automatically mapped.</li>
+                            </ol>
+                        </div>
+                    </div>
+
                     <div class="card interactive-demo">
                         <h3>Interactive Mapping Demo</h3>
                         <p>Drag the World Window to see how it affects the Viewport.</p>
@@ -187,9 +209,17 @@
                         </div>
                         <div class="card">
                             <h3>Characteristics</h3>
-                            <p><strong>Advantages:</strong> Simple to understand and implement.</p>
-                            <p><strong>Disadvantages:</strong> Uses slow floating-point arithmetic. Rounding errors accumulate.</p>
-                            <p><strong>Complexity:</strong> O(steps) per line.</p>
+                            <p><strong>Advantages:</strong></p>
+                            <ul style="margin-left: 20px; font-size: 0.85rem; margin-bottom: 5px;">
+                                <li>Simplest algorithm, no special skills required.</li>
+                                <li>Faster than directly using the standard line equation.</li>
+                            </ul>
+                            <p><strong>Disadvantages:</strong></p>
+                            <ul style="margin-left: 20px; font-size: 0.85rem;">
+                                <li>Orientation dependence makes end point accuracy poor.</li>
+                                <li>Time-consuming floating-point arithmetic.</li>
+                                <li>Precision errors shift calculated points on long lines.</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -624,11 +654,13 @@
                         </div>
                         <div class="card">
                             <h3>OpenGL Workflow</h3>
-                            <ul style="font-family:monospace; font-size: 0.9rem;">
-                                <li><code>void glGenTextures(GLsizei n, GLuint* names)</code><br><span style="font-family:var(--font-family); font-size:0.85rem;">Returns <i>n</i> unused texture names (integers).</span></li>
-                                <li><code>glBindTexture()</code> - Make texture active</li>
-                                <li><code>glTexImage2D()</code> - Load image data</li>
-                                <li><code>glEnable(GL_TEXTURE_2D)</code> - Turn on mapping</li>
+                            <ul style="font-family:monospace; font-size: 0.9rem; line-height: 1.5;">
+                                <li><code>glGenTextures()</code> - Name the texture</li>
+                                <li><code>glBindTexture()</code> - Bind texture to its name</li>
+                                <li><code>glTexParameteri()</code> - Specify texture parameters</li>
+                                <li><code>glTexEnvf()</code> - Specify application mode</li>
+                                <li><code>glTexImage2D()</code> - Create the texture object</li>
+                                <li><code>glEnable(GL_TEXTURE_2D)</code> - Enable texture mapping</li>
                             </ul>
                         </div>
                     </div>
@@ -787,6 +819,20 @@
                             <h4 style="color:var(--primary-color);">Metaverse</h4>
                             <p>Interconnected virtual 3D spaces meant for social interaction, work, and entertainment.</p>
                         </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 20px;">
+                        <h3>Case Study: Smart Traffic Management System</h3>
+                        <p style="margin-bottom: 10px;">Consider a software system displaying 3D roads, moving vehicles, traffic signals, and day/night simulations. Here is how CG concepts are applied:</p>
+                        <ul style="line-height: 1.6; color: #c9d1d9; margin-left: 20px;">
+                            <li><strong>Transformations:</strong> Move and rotate vehicles along the 3D roads.</li>
+                            <li><strong>Projection:</strong> Render the city visualization accurately on a 2D screen.</li>
+                            <li><strong>Animation:</strong> Manage traffic signals and smooth car movements.</li>
+                            <li><strong>Clipping & Mapping:</strong> Efficiently render only the visible parts of the city within the viewport.</li>
+                            <li><strong>Lighting & Shading:</strong> Simulate day/night cycles, streetlights, and vehicle headlights.</li>
+                            <li><strong>AI/VR/AR:</strong> Enhance the system with smart routing and immersive urban planning.</li>
+                        </ul>
                     </div>
                 </div>
             </section>

@@ -161,8 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
             log += `xInc=${xInc.toFixed(2)}, yInc=${yInc.toFixed(2)}\n\n`;
 
             for(let i=0; i<=steps; i++) {
-                let rx = Math.round(x);
-                let ry = Math.round(y);
+                let rx = Math.floor(x);
+                let ry = Math.floor(y);
                 sol.push({x: rx, y: ry});
                 log += `Step ${i}: Plot(${rx}, ${ry})\n`;
                 x += xInc;

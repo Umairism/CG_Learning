@@ -25,7 +25,7 @@ def main():
     with open("extracted_text.txt", "w", encoding="utf-8") as out:
         for file in files:
             out.write(f"--- {os.path.basename(file)} ---\n")
-            out.write(extract_text_from_pptx(file)[:1000] + "...\n\n")
+            out.write(extract_text_from_pptx(file) + "\n\n")
 
 if __name__ == "__main__":
     main()
